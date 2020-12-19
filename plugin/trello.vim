@@ -1,1 +1,6 @@
-command! Trello echo 'vim-trello'
+function! VimTrello()
+  echo 'hello'
+  echo 'vim-trello'
+endfunction
+
+command! Trello call VimTrello()
