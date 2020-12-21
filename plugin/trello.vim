@@ -6,13 +6,13 @@ function! VimTrello()
 endfunction
 
 function! BuildCmd()
-  if !exists('g:apiKey')
+  if !exists('g:vimTrelloApiKey')
     echo 'g:apiKey is not difined in your vimrc'
-    finish
+    return ""
   endif
-  if !exists('g:token')
+  if !exists('g:vimTrelloToken')
     echo 'g:token is not difined in your vimrc'
-    finish
+    return ""
   endif
   let l:cmd = "curl 'https://api.trello.com/1/members/me/boards?key=" . g:apiKey . '&token=' . g:token . "'"
   return l:cmd
