@@ -5,9 +5,13 @@ function! g:trello#VimTrello()
   endif
   let l:cmd = BuildCmd()
   echomsg l:cmd
-  let l:result = system(cmd)
-  echomsg l:result
-  " echomsg json_decode(l:result)
+  let l:result = json_decode(system(cmd))
+  for board in l:result
+    echomsg '=========================================='
+    echomsg board
+    echomsg board['id']
+    echomsg board['name']
+  endfor
 endfunction
 
 function! BuildCmd()
