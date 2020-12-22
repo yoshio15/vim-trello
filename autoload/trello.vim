@@ -19,7 +19,7 @@ function! BuildCmd()
     echo 'g:token is not difined in your vimrc'
     return ""
   endif
-  let l:cmd = "curl -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:cmd = "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
   return l:cmd
 endfunction
 
