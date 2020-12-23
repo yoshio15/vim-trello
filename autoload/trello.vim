@@ -8,10 +8,11 @@ function! g:trello#VimTrello()
   let l:result = json_decode(system(cmd))
   for board in l:result
     echomsg '=========================================='
-    echomsg board
+    " echomsg board
     echomsg board['id']
     echomsg board['name']
   endfor
+  call OpenNewBuffer()
 endfunction
 
 function! BuildCmd()
@@ -25,6 +26,12 @@ function! BuildCmd()
   endif
   let l:cmd = "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
   return l:cmd
+endfunction
+
+" Boardリストを表示するバッファを生成する
+let s:board_list_buffer = 'BOARDS'
+function! OpenNewBuffer()
+  execute 'vnew' s:board_list_buffer
 endfunction
 
 call g:trello#VimTrello()
