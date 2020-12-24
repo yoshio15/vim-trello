@@ -34,6 +34,11 @@ endfunction
 let s:board_list_buffer = 'BOARDS'
 function! OpenNewBuffer(boardList)
   execute 'vnew' s:board_list_buffer
+  set buftype=nofile
+  nnoremap <silent> <buffer>
+    \ <Plug>(close-list)
+    \ :<C-u>bwipeout!<CR>
+  nmap <buffer> q <Plug>(close-list)
   call setline(1, a:boardList)
 endfunction
 
