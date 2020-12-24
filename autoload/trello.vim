@@ -6,15 +6,11 @@ function! g:trello#VimTrello()
   let l:cmd = BuildCmd()
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
-  let l:boardList = []
+  let l:boardDict = {}
   for board in l:result
-    echomsg '=========================================='
-    " echomsg board
-    echomsg board['id']
-    echomsg board['name']
-    call add(l:boardList, board['name'])
+    :let l:boardDict[board['id']] = board['name']
   endfor
-  call OpenNewBuffer(l:boardList)
+  call OpenNewBuffer(l:boardDict)
 endfunction
 
 function! BuildCmd()
@@ -32,14 +28,15 @@ endfunction
 
 " Boardリストを表示するバッファを生成する
 let s:board_list_buffer = 'BOARDS'
-function! OpenNewBuffer(boardList)
+function! OpenNewBuffer(boardDict)
   execute 'vnew' s:board_list_buffer
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
   nmap <buffer> q <Plug>(close-list)
-  call setline(1, a:boardList)
+  echomsg keys(a:boardDict)
+  call setline(1, values(a:boardDict))
 endfunction
 
 call g:trello#VimTrello()
