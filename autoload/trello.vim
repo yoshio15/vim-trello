@@ -33,6 +33,13 @@ function! GetListsCmd(boardId)
   return l:cmd
 endfunction
 
+" Board内のリスト一覧を取得する
+function! GetLists(boardId)
+  echomsg a:boardId
+  let l:cmd = GetListsCmd(a:boardId)
+  echomsg l:cmd
+endfunction
+
 " Boardリストを表示するバッファを生成する
 let s:board_list_buffer = 'BOARDS'
 function! OpenNewBuffer(boardDict)
@@ -41,7 +48,11 @@ function! OpenNewBuffer(boardDict)
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer>
+    \ <Plug>(lists-open)
+    \ :<C-u>call GetLists(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
+  nmap <buffer> <CR> <Plug>(lists-open)
   echomsg keys(a:boardDict)
   call setline(1, values(a:boardDict))
 endfunction
