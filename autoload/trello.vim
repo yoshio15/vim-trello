@@ -29,15 +29,24 @@ endfunction
 
 " Board内のリスト一覧を取得するコマンド
 function! GetListsCmd(boardId)
-  let l:cmd = "curl --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
   return l:cmd
 endfunction
 
 " Board内のリスト一覧を取得する
-function! GetLists(boardId)
-  echomsg a:boardId
-  let l:cmd = GetListsCmd(a:boardId)
+function! GetLists(boardName)
+  echomsg a:boardName
+  let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
+  echomsg l:boardId
+  let l:cmd = GetListsCmd(l:boardId)
   echomsg l:cmd
+  let l:result = json_decode(system(cmd))
+  " echomsg l:result
+  let l:listDict = {}
+  for elem in l:result
+    :let l:listDict[elem['id']] = elem['name']
+  endfor
+  echomsg l:listDict
 endfunction
 
 " Boardリストを表示するバッファを生成する
@@ -54,7 +63,11 @@ function! OpenNewBuffer(boardDict)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
   echomsg keys(a:boardDict)
-  call setline(1, values(a:boardDict))
+  for key in keys(a:boardDict)
+    let l:row = a:boardDict[key] . "(" . key . ")"
+    call append(line("$"), l:row)
+    echomsg l:row
+  endfor
 endfunction
 
 call g:trello#VimTrello()
