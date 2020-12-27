@@ -47,6 +47,7 @@ function! GetLists(boardName)
     :let l:listDict[elem['id']] = elem['name']
   endfor
   echomsg l:listDict
+  call OpenListsNewBuffer(l:listDict)
 endfunction
 
 " Boardリストを表示するバッファを生成する
@@ -65,6 +66,27 @@ function! OpenNewBuffer(boardDict)
   echomsg keys(a:boardDict)
   for key in keys(a:boardDict)
     let l:row = a:boardDict[key] . "(" . key . ")"
+    call append(line("$"), l:row)
+    echomsg l:row
+  endfor
+endfunction
+
+" リスト一覧を表示するバッファを生成する
+let s:card_list_buffer = 'LISTS'
+function! OpenListsNewBuffer(listDict)
+  execute 'vnew' s:card_list_buffer
+  set buftype=nofile
+  nnoremap <silent> <buffer>
+    \ <Plug>(close-list)
+    \ :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer>
+    \ <Plug>(lists-open)
+    \ :<C-u>call GetLists(trim(getline('.')))<CR>
+  nmap <buffer> q <Plug>(close-list)
+  nmap <buffer> <CR> <Plug>(lists-open)
+  echomsg keys(a:listDict)
+  for key in keys(a:listDict)
+    let l:row = a:listDict[key] . "(" . key . ")"
     call append(line("$"), l:row)
     echomsg l:row
   endfor
