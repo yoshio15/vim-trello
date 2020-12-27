@@ -3,7 +3,15 @@ function! g:trello#VimTrello()
     echo 'curl is not available'
     return
   endif
-  let l:cmd = BuildCmd()
+  if !exists('g:vimTrelloApiKey')
+    echo 'g:apiKey is not difined in your vimrc'
+    return
+  endif
+  if !exists('g:vimTrelloToken')
+    echo 'g:token is not difined in your vimrc'
+    return
+  endif
+  let l:cmd = GetBoardsCmd()
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
   let l:boardDict = {}
@@ -14,40 +22,10 @@ function! g:trello#VimTrello()
   call OpenNewBuffer(l:boardDict)
 endfunction
 
-function! BuildCmd()
-  if !exists('g:vimTrelloApiKey')
-    echo 'g:apiKey is not difined in your vimrc'
-    return ""
-  endif
-  if !exists('g:vimTrelloToken')
-    echo 'g:token is not difined in your vimrc'
-    return ""
-  endif
+" Board一覧を取得するコマンド
+function! GetBoardsCmd()
   let l:cmd = "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
   return l:cmd
-endfunction
-
-" Board内のリスト一覧を取得するコマンド
-function! GetListsCmd(boardId)
-  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
-  return l:cmd
-endfunction
-
-" Board内のリスト一覧を取得する
-function! GetLists(boardName)
-  echomsg a:boardName
-  let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
-  echomsg l:boardId
-  let l:cmd = GetListsCmd(l:boardId)
-  echomsg l:cmd
-  let l:result = json_decode(system(cmd))
-  " echomsg l:result
-  let l:listDict = {}
-  for elem in l:result
-    :let l:listDict[elem['id']] = elem['name']
-  endfor
-  echomsg l:listDict
-  call OpenListsNewBuffer(l:listDict)
 endfunction
 
 " Boardリストを表示するバッファを生成する
@@ -69,6 +47,29 @@ function! OpenNewBuffer(boardDict)
     call append(line("$"), l:row)
     echomsg l:row
   endfor
+endfunction
+
+" Board内のリスト一覧を取得する
+function! GetLists(boardName)
+  echomsg a:boardName
+  let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
+  echomsg l:boardId
+  let l:cmd = GetListsCmd(l:boardId)
+  echomsg l:cmd
+  let l:result = json_decode(system(cmd))
+  " echomsg l:result
+  let l:listDict = {}
+  for elem in l:result
+    :let l:listDict[elem['id']] = elem['name']
+  endfor
+  echomsg l:listDict
+  call OpenListsNewBuffer(l:listDict)
+endfunction
+
+" Board内のリスト一覧を取得するコマンド
+function! GetListsCmd(boardId)
+  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  return l:cmd
 endfunction
 
 " リスト一覧を表示するバッファを生成する
