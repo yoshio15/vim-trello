@@ -75,6 +75,7 @@ endfunction
 " リスト一覧を表示するバッファを生成する
 let s:card_list_buffer = 'LISTS'
 function! OpenListsNewBuffer(listDict)
+  call CloseBuf()
   execute 'vnew' s:card_list_buffer
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -91,6 +92,11 @@ function! OpenListsNewBuffer(listDict)
     call append(line("$"), l:row)
     echomsg l:row
   endfor
+endfunction
+
+" バッファを閉じる
+function! CloseBuf()
+  execute 'bwipeout'
 endfunction
 
 call g:trello#VimTrello()
