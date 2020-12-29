@@ -31,7 +31,7 @@ endfunction
 " Boardリストを表示するバッファを生成する
 let s:board_list_buffer = 'BOARDS'
 function! OpenNewBuffer(boardDict)
-  execute 'vnew' s:board_list_buffer
+  call OpenNewBuf(s:board_list_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -76,7 +76,7 @@ endfunction
 let s:card_list_buffer = 'LISTS'
 function! OpenListsNewBuffer(listDict)
   call CloseBuf()
-  execute 'vnew' s:card_list_buffer
+  call OpenNewBuf(s:card_list_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -97,6 +97,11 @@ endfunction
 " バッファを閉じる
 function! CloseBuf()
   execute 'bwipeout'
+endfunction
+
+" バッファを開く
+function! OpenNewBuf(bufName)
+  execute 'vnew' a:bufName
 endfunction
 
 call g:trello#VimTrello()
