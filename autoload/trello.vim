@@ -1,3 +1,4 @@
+" main
 function! g:trello#VimTrello()
   if !executable('curl')
     echo 'curl is not available'
@@ -57,7 +58,6 @@ function! GetLists(boardName)
   let l:cmd = GetListsCmd(l:boardId)
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
-  " echomsg l:result
   let l:listDict = {}
   for elem in l:result
     :let l:listDict[elem['id']] = elem['name']
