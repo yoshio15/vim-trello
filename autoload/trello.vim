@@ -44,7 +44,7 @@ function! OpenNewBuffer(boardDict)
   echomsg keys(a:boardDict)
   for key in keys(a:boardDict)
     let l:row = a:boardDict[key] . "(" . key . ")"
-    call append(line("$"), l:row)
+    call append(line(0), l:row)
     echomsg l:row
   endfor
 endfunction
@@ -89,7 +89,7 @@ function! OpenListsNewBuffer(listDict)
   echomsg keys(a:listDict)
   for key in keys(a:listDict)
     let l:row = a:listDict[key] . "(" . key . ")"
-    call append(line("$"), l:row)
+    call append(line(0), l:row)
     echomsg l:row
   endfor
 endfunction
