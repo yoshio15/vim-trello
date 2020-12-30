@@ -83,7 +83,7 @@ function! OpenListsNewBuffer(listDict)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(lists-open)
-    \ :<C-u>call GetLists(trim(getline('.')))<CR>
+    \ :<C-u>call GetCards(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
   echomsg keys(a:listDict)
@@ -92,6 +92,28 @@ function! OpenListsNewBuffer(listDict)
     call append(line(0), l:row)
     echomsg l:row
   endfor
+endfunction
+
+" リスト内のカード一覧を取得するコマンド
+function! GetCardsCmd(listId)
+  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  return l:cmd
+endfunction
+
+" リスト内のカード一覧を取得する
+function! GetCards(listName)
+  echomsg a:listName
+  let l:listId = a:listName[stridx(a:listName,'(')+1:stridx(a:listName,')')-1]
+  echomsg l:listId
+  let l:cmd = GetCardsCmd(l:listId)
+  echomsg l:cmd
+  let l:result = json_decode(system(cmd))
+  let l:listDict = {}
+  for elem in l:result
+    :let l:listDict[elem['id']] = elem['name']
+  endfor
+  echomsg l:listDict
+  call OpenListsNewBuffer(l:listDict)
 endfunction
 
 " バッファを閉じる
