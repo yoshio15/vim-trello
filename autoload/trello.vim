@@ -28,12 +28,12 @@ function! g:trello#VimTrello()
     :let l:boardDict[board['id']] = board['name']
   endfor
   echomsg l:boardDict
-  call OpenNewBuffer(l:boardDict)
+  call OpenBoardsNewBuffer(l:boardDict)
 endfunction
 
 
 " show Boards in new buffer
-function! OpenNewBuffer(boardDict)
+function! OpenBoardsNewBuffer(boardDict)
   call OpenNewBuf(s:boards_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
