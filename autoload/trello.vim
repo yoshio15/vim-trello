@@ -16,7 +16,7 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let l:cmd = GetBoardsCmd()
+  let l:cmd = s:GetBoardsCmd()
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
   let l:boardDict = {}
@@ -24,7 +24,7 @@ function! g:trello#VimTrello()
     :let l:boardDict[board['id']] = board['name']
   endfor
   echomsg l:boardDict
-  call OpenBoardsNewBuffer(l:boardDict)
+  call s:OpenBoardsNewBuffer(l:boardDict)
 endfunction
 
 
@@ -43,8 +43,8 @@ endfunction
 
 
 " show Boards in new buffer
-function! OpenBoardsNewBuffer(boardDict)
-  call OpenNewBuf(s:boards_buffer)
+function! s:OpenBoardsNewBuffer(boardDict)
+  call s:OpenNewBuf(s:boards_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -73,7 +73,7 @@ function! GetLists(boardName)
 
   let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
   echomsg l:boardId
-  let l:cmd = GetListsCmd(l:boardId)
+  let l:cmd = s:GetListsCmd(l:boardId)
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
   let l:listDict = {}
@@ -81,14 +81,14 @@ function! GetLists(boardName)
     :let l:listDict[elem['id']] = elem['name']
   endfor
   echomsg l:listDict
-  call OpenListsNewBuffer(l:listDict)
+  call s:OpenListsNewBuffer(l:listDict)
 endfunction
 
 
 " show Lists in new buffer
-function! OpenListsNewBuffer(listDict)
-  call CloseBuf()
-  call OpenNewBuf(s:lists_buffer)
+function! s:OpenListsNewBuffer(listDict)
+  call s:CloseBuf()
+  call s:OpenNewBuf(s:lists_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -117,7 +117,7 @@ function! GetCards(listName)
 
   let l:listId = a:listName[stridx(a:listName,'(')+1:stridx(a:listName,')')-1]
   echomsg l:listId
-  let l:cmd = GetCardsCmd(l:listId)
+  let l:cmd = s:GetCardsCmd(l:listId)
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
   let l:listDict = {}
@@ -125,14 +125,14 @@ function! GetCards(listName)
     :let l:listDict[elem['id']] = elem['name']
   endfor
   echomsg l:listDict
-  call OpenCardsNewBuffer(l:listDict)
+  call s:OpenCardsNewBuffer(l:listDict)
 endfunction
 
 
 " show Cards in new buffer
-function! OpenCardsNewBuffer(listDict)
-  call CloseBuf()
-  call OpenNewBuf(s:cards_buffer)
+function! s:OpenCardsNewBuffer(listDict)
+  call s:CloseBuf()
+  call s:OpenNewBuf(s:cards_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -154,15 +154,15 @@ endfunction
 " =================================
 " curl commands
 " =================================
-function! GetBoardsCmd()
+function! s:GetBoardsCmd()
   return "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
 endfunction
 
-function! GetListsCmd(boardId)
+functio! s:GetListsCmd(boardId)
   return "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
 endfunction
 
-function! GetCardsCmd(listId)
+function! s:GetCardsCmd(listId)
   return "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
 endfunction
 
@@ -170,11 +170,11 @@ endfunction
 " =================================
 " manipulate buffer
 " =================================
-function! CloseBuf()
+function! s:CloseBuf()
   execute 'bwipeout'
 endfunction
 
-function! OpenNewBuf(bufName)
+function! s:OpenNewBuf(bufName)
   execute 'vnew' a:bufName
 endfunction
 
