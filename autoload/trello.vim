@@ -3,6 +3,7 @@
 " =================================
 let s:board_list_buffer = 'BOARDS'
 let s:card_list_buffer = 'LISTS'
+let s:cards_buffer = 'CARDS'
 
 
 " vim-trello(main)
@@ -104,7 +105,29 @@ function! GetCards(listName)
     :let l:listDict[elem['id']] = elem['name']
   endfor
   echomsg l:listDict
-  call OpenListsNewBuffer(l:listDict)
+  call OpenCardsNewBuffer(l:listDict)
+endfunction
+
+
+" show Cards in new buffer
+function! OpenCardsNewBuffer(listDict)
+  call CloseBuf()
+  call OpenNewBuf(s:cards_buffer)
+  set buftype=nofile
+  nnoremap <silent> <buffer>
+    \ <Plug>(close-list)
+    \ :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer>
+    \ <Plug>(lists-open)
+    \ :<C-u>call GetCards(trim(getline('.')))<CR>
+  nmap <buffer> q <Plug>(close-list)
+  nmap <buffer> <CR> <Plug>(lists-open)
+  echomsg keys(a:listDict)
+  for key in keys(a:listDict)
+    let l:row = a:listDict[key] . "(" . key . ")"
+    call append(line(0), l:row)
+    echomsg l:row
+  endfor
 endfunction
 
 
