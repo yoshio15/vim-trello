@@ -8,18 +8,14 @@ let s:cards_buffer = 'CARDS'
 
 " vim-trello(main)
 function! g:trello#VimTrello()
-  if !executable('curl')
-    echo 'curl is not available'
+
+  try
+    call s:CheckEnv()
+  catch
+    echomsg v:exception
     return
-  endif
-  if !exists('g:vimTrelloApiKey')
-    echo 'g:apiKey is not difined in your vimrc'
-    return
-  endif
-  if !exists('g:vimTrelloToken')
-    echo 'g:token is not difined in your vimrc'
-    return
-  endif
+  endtry
+
   let l:cmd = GetBoardsCmd()
   echomsg l:cmd
   let l:result = json_decode(system(cmd))
@@ -29,6 +25,20 @@ function! g:trello#VimTrello()
   endfor
   echomsg l:boardDict
   call OpenBoardsNewBuffer(l:boardDict)
+endfunction
+
+
+" check enviroment
+function! s:CheckEnv()
+  if !executable('curl')
+    throw "curl is not available"
+  endif
+  if !exists('g:vimTrelloApiKey')
+    throw "g:apiKey is not difined in your vimrc"
+  endif
+  if !exists('g:vimTrelloToken')
+    throw "g:token is not difined in your vimrc"
+  endif
 endfunction
 
 
