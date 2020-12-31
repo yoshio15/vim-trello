@@ -1,4 +1,11 @@
-" main
+" =================================
+" variables
+" =================================
+let s:board_list_buffer = 'BOARDS'
+let s:card_list_buffer = 'LISTS'
+
+
+" vim-trello(main)
 function! g:trello#VimTrello()
   if !executable('curl')
     echo 'curl is not available'
@@ -23,14 +30,8 @@ function! g:trello#VimTrello()
   call OpenNewBuffer(l:boardDict)
 endfunction
 
-" Board一覧を取得するコマンド
-function! GetBoardsCmd()
-  let l:cmd = "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
-  return l:cmd
-endfunction
 
-" Boardリストを表示するバッファを生成する
-let s:board_list_buffer = 'BOARDS'
+" show Boards in new buffer
 function! OpenNewBuffer(boardDict)
   call OpenNewBuf(s:board_list_buffer)
   set buftype=nofile
@@ -50,7 +51,8 @@ function! OpenNewBuffer(boardDict)
   endfor
 endfunction
 
-" Board内のリスト一覧を取得する
+
+" get Boards from Lists
 function! GetLists(boardName)
   echomsg a:boardName
   let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
@@ -66,14 +68,8 @@ function! GetLists(boardName)
   call OpenListsNewBuffer(l:listDict)
 endfunction
 
-" Board内のリスト一覧を取得するコマンド
-function! GetListsCmd(boardId)
-  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
-  return l:cmd
-endfunction
 
-" リスト一覧を表示するバッファを生成する
-let s:card_list_buffer = 'LISTS'
+" show Lists in new buffer
 function! OpenListsNewBuffer(listDict)
   call CloseBuf()
   call OpenNewBuf(s:card_list_buffer)
@@ -94,13 +90,8 @@ function! OpenListsNewBuffer(listDict)
   endfor
 endfunction
 
-" リスト内のカード一覧を取得するコマンド
-function! GetCardsCmd(listId)
-  let l:cmd = "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
-  return l:cmd
-endfunction
 
-" リスト内のカード一覧を取得する
+" get Cards from Lists
 function! GetCards(listName)
   echomsg a:listName
   let l:listId = a:listName[stridx(a:listName,'(')+1:stridx(a:listName,')')-1]
@@ -116,12 +107,30 @@ function! GetCards(listName)
   call OpenListsNewBuffer(l:listDict)
 endfunction
 
-" バッファを閉じる
+
+" =================================
+" curl commands
+" =================================
+function! GetBoardsCmd()
+  return "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+endfunction
+
+function! GetListsCmd(boardId)
+  return "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+endfunction
+
+function! GetCardsCmd(listId)
+  return "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+endfunction
+
+
+" =================================
+" manipulate buffer
+" =================================
 function! CloseBuf()
   execute 'bwipeout'
 endfunction
 
-" バッファを開く
 function! OpenNewBuf(bufName)
   execute 'vnew' a:bufName
 endfunction
