@@ -1,8 +1,8 @@
 " =================================
 " variables
 " =================================
-let s:board_list_buffer = 'BOARDS'
-let s:card_list_buffer = 'LISTS'
+let s:boards_buffer = 'BOARDS'
+let s:lists_buffer = 'LISTS'
 let s:cards_buffer = 'CARDS'
 
 
@@ -34,7 +34,7 @@ endfunction
 
 " show Boards in new buffer
 function! OpenNewBuffer(boardDict)
-  call OpenNewBuf(s:board_list_buffer)
+  call OpenNewBuf(s:boards_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -73,7 +73,7 @@ endfunction
 " show Lists in new buffer
 function! OpenListsNewBuffer(listDict)
   call CloseBuf()
-  call OpenNewBuf(s:card_list_buffer)
+  call OpenNewBuf(s:lists_buffer)
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
