@@ -65,7 +65,12 @@ endfunction
 
 " get Boards from Lists
 function! GetLists(boardName)
+
   echomsg a:boardName
+  if a:boardName == ""
+    return
+  endif
+
   let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
   echomsg l:boardId
   let l:cmd = GetListsCmd(l:boardId)
@@ -104,7 +109,12 @@ endfunction
 
 " get Cards from Lists
 function! GetCards(listName)
+
   echomsg a:listName
+  if a:listName == ""
+    return
+  endif
+
   let l:listId = a:listName[stridx(a:listName,'(')+1:stridx(a:listName,')')-1]
   echomsg l:listId
   let l:cmd = GetCardsCmd(l:listId)
