@@ -70,7 +70,6 @@ function! s:OpenBoardsNewBuffer(boardDict)
 endfunction
 
 
-" TODO 共通化
 " get Boards from Lists
 function! GetLists(boardName)
 
@@ -91,12 +90,9 @@ function! GetLists(boardName)
     return
   endtry
 
-  let l:listDict = {}
-  for elem in l:result
-    :let l:listDict[elem['id']] = elem['name']
-  endfor
-  echomsg l:listDict
+  let l:listDict = s:GetIdAndNameDictFromResList(l:result)
   call s:OpenListsNewBuffer(l:listDict)
+
 endfunction
 
 
@@ -142,12 +138,9 @@ function! GetCards(listName)
     return
   endtry
 
-  let l:listDict = {}
-  for elem in l:result
-    :let l:listDict[elem['id']] = elem['name']
-  endfor
-  echomsg l:listDict
+  let l:listDict = s:GetIdAndNameDictFromResList(l:result)
   call s:OpenCardsNewBuffer(l:listDict)
+
 endfunction
 
 
@@ -180,6 +173,14 @@ function! s:GetIdFromLine(line)
   return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
 
+function! s:GetIdAndNameDictFromResList(responseList)
+  let l:dict = {}
+  for response in a:responseList
+    let l:dict[response['id']] = response['name']
+  endfor
+  echomsg l:dict
+  return l:dict
+endfunction
 
 " =================================
 " curl commands
