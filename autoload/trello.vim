@@ -78,7 +78,7 @@ function! GetLists(boardName)
     return
   endif
 
-  let l:boardId = a:boardName[stridx(a:boardName,'(')+1:stridx(a:boardName,')')-1]
+  let l:boardId = a:boardName[stridx(a:boardName,'(') + 1 : stridx(a:boardName,')') - 1]
   echomsg l:boardId
   let l:cmd = s:GetListsCmd(l:boardId)
   echomsg l:cmd
@@ -129,7 +129,7 @@ function! GetCards(listName)
     return
   endif
 
-  let l:listId = a:listName[stridx(a:listName,'(')+1:stridx(a:listName,')')-1]
+  let l:listId = a:listName[stridx(a:listName,'(') + 1 : stridx(a:listName,')') - 1]
   echomsg l:listId
   let l:cmd = s:GetCardsCmd(l:listId)
   echomsg l:cmd
