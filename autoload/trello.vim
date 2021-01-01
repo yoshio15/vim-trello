@@ -182,25 +182,38 @@ function! s:GetIdAndNameDictFromResList(responseList)
   return l:dict
 endfunction
 
+
 " =================================
 " curl commands
 " =================================
-" TODO 文字列共通部分抜き出す
 function! s:GetBoardsCmd()
-  return "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:path = "/1/members/me/boards"
+  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 functio! s:GetListsCmd(boardId)
-  return "curl -s --request GET --url 'https://api.trello.com/1/boards/" . a:boardId . "/lists?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:path = "/1/boards/" . a:boardId . "/lists"
+  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:GetCardsCmd(listId)
-  return "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:path = "/1/lists/" . a:listId . "/cards"
+  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:GetSingleCardCmd(cardId)
-  return "curl -s --request GET --url 'https://api.trello.com/1/cards/" . a:cardId . "?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+  let l:path = "/1/cards/" . a:cardId
+  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
+
+function! s:CurlGetCmd(url)
+  return "curl -s --request GET --url '" . a:url . "'"
+endfunction
+
+function! s:BuildTrelloApiUrl(path)
+  return "https://api.trello.com" . a:path . "?key=" . g:vimTrelloApiKey . "&token=" . g:vimTrelloToken
+endfunction
+
 
 " =================================
 " manipulate buffer
