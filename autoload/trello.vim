@@ -187,6 +187,9 @@ function! s:GetCardsCmd(listId)
   return "curl -s --request GET --url 'https://api.trello.com/1/lists/" . a:listId . "/cards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
 endfunction
 
+function! s:GetSingleCardCmd(cardId)
+  return "curl -s --request GET --url 'https://api.trello.com/1/cards/" . a:cardId . "?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
+endfunction
 
 " =================================
 " manipulate buffer
