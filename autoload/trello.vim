@@ -179,7 +179,7 @@ function! GetSingleCard(cardName)
     return
   endtry
 
-  let l:desc= l:result['desc']
+  let l:desc = s:GetDescFromRes(l:result)
   call s:OpenSingleCardNewBuffer(l:desc)
 
 endfunction
@@ -187,6 +187,10 @@ endfunction
 
 " show description of single card in new buffer
 function! s:OpenSingleCardNewBuffer(desc)
+
+  if a:desc == ""
+    return
+  endif
 
   call s:CloseBuf()
   call s:OpenNewBuf(s:single_card_buffer)
@@ -216,6 +220,14 @@ function! s:GetIdAndNameDictFromResList(responseList)
   endfor
   echomsg l:dict
   return l:dict
+endfunction
+
+function! s:GetDescFromRes(response)
+  let l:desc = 'desc'
+  if has_key(a:response, l:desc)
+    return a:response[l:desc]
+  endif
+  return ''
 endfunction
 
 function! s:WriteDictToBuf(dict)
