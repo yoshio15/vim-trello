@@ -18,7 +18,14 @@ function! g:trello#VimTrello()
 
   let l:cmd = s:GetBoardsCmd()
   echomsg l:cmd
-  let l:result = json_decode(system(cmd))
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
   let l:boardDict = {}
   for board in l:result
     :let l:boardDict[board['id']] = board['name']
@@ -75,7 +82,14 @@ function! GetLists(boardName)
   echomsg l:boardId
   let l:cmd = s:GetListsCmd(l:boardId)
   echomsg l:cmd
-  let l:result = json_decode(system(cmd))
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
   let l:listDict = {}
   for elem in l:result
     :let l:listDict[elem['id']] = elem['name']
@@ -119,7 +133,14 @@ function! GetCards(listName)
   echomsg l:listId
   let l:cmd = s:GetCardsCmd(l:listId)
   echomsg l:cmd
-  let l:result = json_decode(system(cmd))
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
   let l:listDict = {}
   for elem in l:result
     :let l:listDict[elem['id']] = elem['name']
