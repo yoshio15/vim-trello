@@ -4,6 +4,7 @@
 let s:boards_buffer = 'BOARDS'
 let s:lists_buffer = 'LISTS'
 let s:cards_buffer = 'CARDS'
+let s:single_card_buffer = 'CARD'
 
 
 " vim-trello(main)
@@ -151,11 +152,52 @@ function! s:OpenCardsNewBuffer(listDict)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(lists-open)
-    \ :<C-u>call GetCards(trim(getline('.')))<CR>
+    \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
 
   call s:WriteDictToBuf(a:listDict)
+
+endfunction
+
+
+" get single card
+function! GetSingleCard(cardName)
+
+  echomsg a:cardName
+  if a:cardName == ""
+    return
+  endif
+
+  let l:cardId = s:GetIdFromLine(a:cardName)
+  let l:cmd = s:GetSingleCardCmd(l:cardId)
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
+  let l:desc= l:result['desc']
+  call s:OpenSingleCardNewBuffer(l:desc)
+
+endfunction
+
+
+" show description of single card in new buffer
+function! s:OpenSingleCardNewBuffer(desc)
+
+  call s:CloseBuf()
+  call s:OpenNewBuf(s:single_card_buffer)
+
+  set buftype=nofile
+  nnoremap <silent> <buffer>
+    \ <Plug>(close-buf)
+    \ :<C-u>bwipeout!<CR>
+  nmap <buffer> q <Plug>(close-buf)
+
+  call setline(1, a:desc)
 
 endfunction
 
