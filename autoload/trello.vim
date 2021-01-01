@@ -48,7 +48,9 @@ endfunction
 
 " show Boards in new buffer
 function! s:OpenBoardsNewBuffer(boardDict)
+
   call s:OpenNewBuf(s:boards_buffer)
+
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -58,12 +60,9 @@ function! s:OpenBoardsNewBuffer(boardDict)
     \ :<C-u>call GetLists(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
-  echomsg keys(a:boardDict)
-  for key in keys(a:boardDict)
-    let l:row = a:boardDict[key] . "(" . key . ")"
-    call append(line(0), l:row)
-    echomsg l:row
-  endfor
+
+  call s:WriteDictToBuf(a:boardDict)
+
 endfunction
 
 
@@ -95,8 +94,10 @@ endfunction
 
 " show Lists in new buffer
 function! s:OpenListsNewBuffer(listDict)
+
   call s:CloseBuf()
   call s:OpenNewBuf(s:lists_buffer)
+
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -106,12 +107,9 @@ function! s:OpenListsNewBuffer(listDict)
     \ :<C-u>call GetCards(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
-  echomsg keys(a:listDict)
-  for key in keys(a:listDict)
-    let l:row = a:listDict[key] . "(" . key . ")"
-    call append(line(0), l:row)
-    echomsg l:row
-  endfor
+
+  call s:WriteDictToBuf(a:listDict)
+
 endfunction
 
 
@@ -143,8 +141,10 @@ endfunction
 
 " show Cards in new buffer
 function! s:OpenCardsNewBuffer(listDict)
+
   call s:CloseBuf()
   call s:OpenNewBuf(s:cards_buffer)
+
   set buftype=nofile
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
@@ -154,12 +154,9 @@ function! s:OpenCardsNewBuffer(listDict)
     \ :<C-u>call GetCards(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
-  echomsg keys(a:listDict)
-  for key in keys(a:listDict)
-    let l:row = a:listDict[key] . "(" . key . ")"
-    call append(line(0), l:row)
-    echomsg l:row
-  endfor
+
+  call s:WriteDictToBuf(a:listDict)
+
 endfunction
 
 
@@ -177,6 +174,15 @@ function! s:GetIdAndNameDictFromResList(responseList)
   endfor
   echomsg l:dict
   return l:dict
+endfunction
+
+function! s:WriteDictToBuf(dict)
+  echomsg keys(a:dict)
+  for key in keys(a:dict)
+    let l:row = a:dict[key] . "(" . key . ")"
+    call append(line(0), l:row)
+    echomsg l:row
+  endfor
 endfunction
 
 
