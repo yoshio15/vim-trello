@@ -79,7 +79,7 @@ function! GetLists(boardName)
     return
   endif
 
-  let l:boardId = a:boardName[stridx(a:boardName,'(') + 1 : stridx(a:boardName,')') - 1]
+  let l:boardId = s:GetIdFromLine(a:boardName)
   echomsg l:boardId
   let l:cmd = s:GetListsCmd(l:boardId)
   echomsg l:cmd
@@ -130,7 +130,7 @@ function! GetCards(listName)
     return
   endif
 
-  let l:listId = a:listName[stridx(a:listName,'(') + 1 : stridx(a:listName,')') - 1]
+  let l:listId = s:GetIdFromLine(a:listName)
   echomsg l:listId
   let l:cmd = s:GetCardsCmd(l:listId)
   echomsg l:cmd
@@ -170,6 +170,14 @@ function! s:OpenCardsNewBuffer(listDict)
     call append(line(0), l:row)
     echomsg l:row
   endfor
+endfunction
+
+
+" =================================
+" common functions
+" =================================
+function! s:GetIdFromLine(line)
+  return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
 
 
