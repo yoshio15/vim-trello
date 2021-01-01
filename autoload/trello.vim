@@ -70,6 +70,7 @@ function! s:OpenBoardsNewBuffer(boardDict)
 endfunction
 
 
+" TODO 共通化
 " get Boards from Lists
 function! GetLists(boardName)
 
@@ -175,6 +176,7 @@ endfunction
 " =================================
 " curl commands
 " =================================
+" TODO 文字列共通部分抜き出す
 function! s:GetBoardsCmd()
   return "curl -s -X GET 'https://api.trello.com/1/members/me/boards?key=" . g:vimTrelloApiKey . '&token=' . g:vimTrelloToken . "'"
 endfunction
