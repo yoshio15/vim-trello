@@ -26,12 +26,9 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let l:boardDict = {}
-  for board in l:result
-    :let l:boardDict[board['id']] = board['name']
-  endfor
-  echomsg l:boardDict
+  let l:boardDict = s:GetIdAndNameDictFromResList(l:result)
   call s:OpenBoardsNewBuffer(l:boardDict)
+
 endfunction
 
 
