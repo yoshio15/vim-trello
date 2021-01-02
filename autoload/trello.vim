@@ -152,9 +152,15 @@ function! s:OpenCardsNewBuffer(listDict)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
+  nnoremap <buffer> a :call AddNewCard("test")<CR>
 
   call s:WriteDictToBuf(a:listDict)
 
+endfunction
+
+function! AddNewCard(title)
+  echomsg a:title
+  echomsg "==== add new card ===="
 endfunction
 
 
@@ -251,6 +257,17 @@ function! s:WriteDictToBuf(dict)
   endfor
 endfunction
 
+function! s:AddPostParams(url, idList, name)
+  if a:idList == ""
+    throw  "param 'idList' is required to add new Card"
+  endif
+  if a:name != ""
+    a:url = a:url .  "&name=" . a:name
+  endif
+  a:url = a:url . "&idList=" . a:idList
+  return a:url
+endfunction
+
 
 " =================================
 " curl commands
@@ -275,8 +292,18 @@ function! s:GetSingleCardCmd(cardId)
   return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
+function! s:AddNewCardCmd(listId, title)
+  let l:path = "/1/cards"
+  let l:absolute_url = s:AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
+  return  s:CurlPostCmd(l:absolute_url)
+endfunction
+
 function! s:CurlGetCmd(url)
   return "curl -s --request GET --url '" . a:url . "'"
+endfunction
+
+function! s:CurlPostCmd(url)
+  return "curl -s --request POST --url '" . a:url . "'"
 endfunction
 
 function! s:BuildTrelloApiUrl(path)
