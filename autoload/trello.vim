@@ -280,7 +280,7 @@ function! s:CloseBuf()
 endfunction
 
 function! s:OpenNewBuf(bufName)
-  execute 'vnew' a:bufName
+  execute 50 'vnew' a:bufName
 endfunction
 
 call g:trello#VimTrello()
