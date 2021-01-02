@@ -7,7 +7,9 @@ let s:cards_buffer = 'CARDS'
 let s:single_card_buffer = 'CARD'
 
 
-" vim-trello(main)
+" =================================
+" 【Main】vim-trello
+" =================================
 function! g:trello#VimTrello()
 
   try
@@ -33,21 +35,10 @@ function! g:trello#VimTrello()
 endfunction
 
 
-" check enviroment
-function! s:CheckEnv()
-  if !executable('curl')
-    throw "curl is not available"
-  endif
-  if !exists('g:vimTrelloApiKey')
-    throw "g:apiKey is not difined in your vimrc"
-  endif
-  if !exists('g:vimTrelloToken')
-    throw "g:token is not difined in your vimrc"
-  endif
-endfunction
-
-
+" =================================
 " show Boards in new buffer
+"  - Boards Buffer Setting
+" =================================
 function! s:OpenBoardsNewBuffer(boardDict)
 
   call s:OpenNewBuf(s:boards_buffer)
@@ -93,7 +84,10 @@ function! GetLists(boardName)
 endfunction
 
 
+" =================================
 " show Lists in new buffer
+"  - Lists Buffer Setting
+" =================================
 function! s:OpenListsNewBuffer(listDict)
 
   call s:CloseBuf()
@@ -140,7 +134,10 @@ function! GetCards(listName)
 endfunction
 
 
+" =================================
 " show Cards in new buffer
+"  - Cards Buffer Setting
+" =================================
 function! s:OpenCardsNewBuffer(listDict)
 
   call s:CloseBuf()
@@ -185,7 +182,10 @@ function! GetSingleCard(cardName)
 endfunction
 
 
+" =================================
 " show description of single card in new buffer
+"  - Description of single card Buffer Setting
+" =================================
 function! s:OpenSingleCardNewBuffer(desc)
 
   if a:desc == ""
@@ -207,8 +207,20 @@ endfunction
 
 
 " =================================
-" common functions
+" 【Common】functions
 " =================================
+function! s:CheckEnv()
+  if !executable('curl')
+    throw "curl is not available"
+  endif
+  if !exists('g:vimTrelloApiKey')
+    throw "g:apiKey is not difined in your vimrc"
+  endif
+  if !exists('g:vimTrelloToken')
+    throw "g:token is not difined in your vimrc"
+  endif
+endfunction
+
 function! s:GetIdFromLine(line)
   return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
