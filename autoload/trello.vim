@@ -137,6 +137,7 @@ endfunction
 " =================================
 " show Cards in new buffer
 "  - Cards Buffer Setting
+"  TODO get ID of the List
 " =================================
 function! s:OpenCardsNewBuffer(listDict)
 
@@ -159,6 +160,7 @@ function! s:OpenCardsNewBuffer(listDict)
 endfunction
 
 function! AddNewCard(title)
+  echomsg s:AddNewCardCmd("idList", a:title)
   echomsg a:title
   echomsg "==== add new card ===="
 endfunction
@@ -258,14 +260,15 @@ function! s:WriteDictToBuf(dict)
 endfunction
 
 function! s:AddPostParams(url, idList, name)
+  let l:absolute_url = a:url
   if a:idList == ""
     throw  "param 'idList' is required to add new Card"
   endif
   if a:name != ""
-    a:url = a:url .  "&name=" . a:name
+    let l:absolute_url = l:absolute_url .  "&name=" . a:name
   endif
-  a:url = a:url . "&idList=" . a:idList
-  return a:url
+  let l:absolute_url = l:absolute_url . "&idList=" . a:idList
+  return l:absolute_url
 endfunction
 
 
@@ -277,7 +280,7 @@ function! s:GetBoardsCmd()
   return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
-functio! s:GetListsCmd(boardId)
+function! s:GetListsCmd(boardId)
   let l:path = "/1/boards/" . a:boardId . "/lists"
   return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
