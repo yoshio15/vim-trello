@@ -283,4 +283,9 @@ function! s:OpenNewBuf(bufName)
   execute 50 'vnew' a:bufName
 endfunction
 
+
+" =================================
+" for debug
+"  - debug this script by `:so %`
+" =================================
 call g:trello#VimTrello()
