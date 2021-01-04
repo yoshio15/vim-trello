@@ -129,7 +129,7 @@ function! GetCards(listName)
   endtry
 
   let l:listDict = s:GetIdAndNameDictFromResList(l:result)
-  call s:OpenCardsNewBuffer(l:listDict)
+  call s:OpenCardsNewBuffer(l:listDict, l:listId)
 
 endfunction
 
@@ -137,9 +137,13 @@ endfunction
 " =================================
 " show Cards in new buffer
 "  - Cards Buffer Setting
-"  TODO get ID of the List
 " =================================
-function! s:OpenCardsNewBuffer(listDict)
+function! s:OpenCardsNewBuffer(listDict, listId)
+
+  echomsg "=================================="
+  echomsg "listId: " . a:listId
+  echomsg ""
+  echomsg "=================================="
 
   call s:CloseBuf()
   call s:OpenNewBuf(s:cards_buffer)
@@ -153,6 +157,7 @@ function! s:OpenCardsNewBuffer(listDict)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
+"  TODO pass ID to AddNewCard function
   nnoremap <buffer> a :call AddNewCard("test")<CR>
 
   call s:WriteDictToBuf(a:listDict)
