@@ -142,31 +142,35 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 
   echomsg "=================================="
   echomsg "listId: " . a:listId
-  echomsg ""
   echomsg "=================================="
 
   call s:CloseBuf()
   call s:OpenNewBuf(s:cards_buffer)
 
   set buftype=nofile
+"  TODO pass ID to AddNewCard function
+"  AddNewCard の第一引数に a:listId を入れるとエラー
+  nnoremap <silent> <buffer>
+    \ <Plug>(add-card)
+    \ :<C-u>call AddNewCard("hoge", "test")<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(lists-open)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
+  nmap <buffer> a <Plug>(add-card)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
-"  TODO pass ID to AddNewCard function
-  nnoremap <buffer> a :call AddNewCard("test")<CR>
 
   call s:WriteDictToBuf(a:listDict)
 
 endfunction
 
-function! AddNewCard(title)
-  echomsg s:AddNewCardCmd("idList", a:title)
+function! AddNewCard(listId, title)
+  echomsg s:AddNewCardCmd(a:listId, a:title)
   echomsg a:title
+  echomsg a:listId
   echomsg "==== add new card ===="
 endfunction
 
