@@ -165,6 +165,7 @@ function! OpenAddNewCardBuf(listId)
   call s:CloseBuf()
   call s:OpenNewBuf(s:new_card_buffer)
 
+  %delete _
   let l:desc = "Enter title of card which you want to add."
   call append(line(0), l:desc)
 
