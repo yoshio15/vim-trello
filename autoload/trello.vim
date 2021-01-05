@@ -160,11 +160,14 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 
 endfunction
 
+" add single card
 function! AddNewCard(listId, title)
-  echomsg s:AddNewCardCmd(a:listId, a:title)
-  echomsg a:title
-  echomsg a:listId
   echomsg "==== add new card ===="
+  echomsg "title: " . a:title
+  echomsg "listid: " . a:listId
+  let l:cmd = s:AddNewCardCmd(a:listId, a:title)
+  echomsg "cmd: " . l:cmd
+  echomsg system(l:cmd)
 endfunction
 
 
