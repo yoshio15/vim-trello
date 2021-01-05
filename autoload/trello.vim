@@ -140,10 +140,6 @@ endfunction
 " =================================
 function! s:OpenCardsNewBuffer(listDict, listId)
 
-  echomsg "=================================="
-  echomsg "listId: " . a:listId
-  echomsg "=================================="
-
   call s:CloseBuf()
   call s:OpenNewBuf(s:cards_buffer)
 
