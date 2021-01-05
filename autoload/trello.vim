@@ -148,11 +148,8 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   call s:OpenNewBuf(s:cards_buffer)
 
   set buftype=nofile
-"  TODO pass ID to AddNewCard function
-"  AddNewCard の第一引数に a:listId を入れるとエラー
-  nnoremap <silent> <buffer>
-    \ <Plug>(add-card)
-    \ :<C-u>call AddNewCard("hoge", "test")<CR>
+"  TODO pass title to AddNewCard function
+  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call AddNewCard("' . a:listId . '", "test")<CR>'
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
