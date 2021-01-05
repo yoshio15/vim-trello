@@ -5,6 +5,7 @@ let s:boards_buffer = 'BOARDS'
 let s:lists_buffer = 'LISTS'
 let s:cards_buffer = 'CARDS'
 let s:single_card_buffer = 'CARD'
+let s:new_card_buffer = 'NEW_CARD'
 
 
 " =================================
@@ -144,8 +145,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   call s:OpenNewBuf(s:cards_buffer)
 
   set buftype=nofile
-"  TODO pass title to AddNewCard function
-  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call AddNewCard("' . a:listId . '", "test")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewCardBuf("' . a:listId . '")<CR>'
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
@@ -160,14 +160,29 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 
 endfunction
 
+
+function! OpenAddNewCardBuf(listId)
+  call s:CloseBuf()
+  call s:OpenNewBuf(s:new_card_buffer)
+
+  let l:desc = "Enter title of card which you want to add."
+  call append(line(0), l:desc)
+
+"  TODO pass title to AddNewCard function
+  exec 'nnoremap <silent> <buffer> <CR> :<C-u>call AddNewCard("' . a:listId . '", "' . getline(0) . '")<CR>'
+  nnoremap <buffer> q :<C-u>bwipeout!<CR>
+endfunction
+
+
 " add single card
 function! AddNewCard(listId, title)
   echomsg "==== add new card ===="
   echomsg "title: " . a:title
   echomsg "listid: " . a:listId
+  echomsg "======================"
   let l:cmd = s:AddNewCardCmd(a:listId, a:title)
   echomsg "cmd: " . l:cmd
-  echomsg system(l:cmd)
+  " echomsg system(l:cmd)
 endfunction
 
 
