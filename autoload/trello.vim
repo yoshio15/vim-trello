@@ -145,7 +145,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   call s:OpenNewBuf(s:cards_buffer)
 
   set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewCardBuf("' . a:listId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
   nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
@@ -161,17 +161,13 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 endfunction
 
 
-function! OpenAddNewCardBuf(listId)
-  call s:CloseBuf()
-  call s:OpenNewBuf(s:new_card_buffer)
+function! OpenAddNewTaskArea(listId)
+  " accept user input
+  call inputsave()
+  let l:userInput=input("Enter title of card which you want to add.\nTask name: ")
+  call inputrestore()
 
-  %delete _
-  let l:desc = "Enter title of card which you want to add."
-  call append(line(0), l:desc)
-
-"  TODO pass title to AddNewCard function
-  exec 'nnoremap <silent> <buffer> <CR> :<C-u>call AddNewCard("' . a:listId . '", "' . getline(0) . '")<CR>'
-  nnoremap <buffer> q :<C-u>bwipeout!<CR>
+  call AddNewCard(a:listId, l:userInput)
 endfunction
 
 
@@ -183,7 +179,7 @@ function! AddNewCard(listId, title)
   echomsg "======================"
   let l:cmd = s:AddNewCardCmd(a:listId, a:title)
   echomsg "cmd: " . l:cmd
-  " echomsg system(l:cmd)
+  echomsg system(l:cmd)
 endfunction
 
 
