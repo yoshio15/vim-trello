@@ -5,7 +5,6 @@ let s:boards_buffer = 'BOARDS'
 let s:lists_buffer = 'LISTS'
 let s:cards_buffer = 'CARDS'
 let s:single_card_buffer = 'CARD'
-let s:new_card_buffer = 'NEW_CARD'
 
 
 " =================================
