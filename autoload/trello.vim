@@ -146,12 +146,16 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
   nnoremap <silent> <buffer>
+    \ <Plug>(delete-card)
+    \ :<C-u>call DeleteCard(trim(getline('.')))<CR>
+  nnoremap <silent> <buffer>
     \ <Plug>(close-list)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(lists-open)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
+  nmap <buffer> d <Plug>(delete-card)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
 
@@ -181,6 +185,22 @@ function! AddNewCard(listId, title)
   echomsg system(l:cmd)
 endfunction
 
+
+" delete card
+function! DeleteCard(cardName)
+
+  echomsg a:cardName
+  if a:cardName == ""
+    return
+  endif
+
+  let l:cardId = s:GetIdFromLine(a:cardName)
+  let l:cmd = s:DeleteCardCmd(l:cardId)
+
+  echomsg "cmd: " . l:cmd
+  echomsg system(l:cmd)
+
+endfunction
 
 " get single card
 function! GetSingleCard(cardName)
@@ -317,12 +337,21 @@ function! s:AddNewCardCmd(listId, title)
   return  s:CurlPostCmd(l:absolute_url)
 endfunction
 
+function! s:DeleteCardCmd(cardId)
+  let l:path = "/1/cards/" . a:cardId
+  return  s:CurlDeleteCmd(s:BuildTrelloApiUrl(l:path))
+endfunction
+
 function! s:CurlGetCmd(url)
   return "curl -s --request GET --url '" . a:url . "'"
 endfunction
 
 function! s:CurlPostCmd(url)
   return "curl -s --request POST --url '" . a:url . "'"
+endfunction
+
+function! s:CurlDeleteCmd(url)
+  return "curl -s --request DELETE --url '" . a:url . "'"
 endfunction
 
 function! s:BuildTrelloApiUrl(path)
