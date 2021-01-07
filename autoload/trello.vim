@@ -13,7 +13,7 @@ let s:single_card_buffer = 'CARD'
 function! g:trello#VimTrello()
 
   try
-    call s:CheckEnv()
+    call g:common#CheckEnv()
   catch
     echomsg v:exception
     return
@@ -29,7 +29,7 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let l:boardDict = s:GetIdAndNameDictFromResList(l:result)
+  let l:boardDict = g:common#GetIdAndNameDictFromResList(l:result)
   call s:OpenBoardsNewBuffer(l:boardDict)
 
 endfunction
@@ -53,7 +53,7 @@ function! s:OpenBoardsNewBuffer(boardDict)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
 
-  call s:WriteDictToBuf(a:boardDict)
+  call g:common#WriteDictToBuf(a:boardDict)
 
 endfunction
 
@@ -66,7 +66,7 @@ function! GetLists(boardName)
     return
   endif
 
-  let l:boardId = s:GetIdFromLine(a:boardName)
+  let l:boardId = g:common#GetIdFromLine(a:boardName)
   echomsg l:boardId
   let l:cmd = s:GetListsCmd(l:boardId)
   echomsg l:cmd
@@ -78,7 +78,7 @@ function! GetLists(boardName)
     return
   endtry
 
-  let l:listDict = s:GetIdAndNameDictFromResList(l:result)
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
   call s:OpenListsNewBuffer(l:listDict)
 
 endfunction
@@ -103,7 +103,7 @@ function! s:OpenListsNewBuffer(listDict)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
 
-  call s:WriteDictToBuf(a:listDict)
+  call g:common#WriteDictToBuf(a:listDict)
 
 endfunction
 
@@ -116,7 +116,7 @@ function! GetCards(listName)
     return
   endif
 
-  let l:listId = s:GetIdFromLine(a:listName)
+  let l:listId = g:common#GetIdFromLine(a:listName)
   echomsg l:listId
   let l:cmd = s:GetCardsCmd(l:listId)
   echomsg l:cmd
@@ -128,7 +128,7 @@ function! GetCards(listName)
     return
   endtry
 
-  let l:listDict = s:GetIdAndNameDictFromResList(l:result)
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
   call s:OpenCardsNewBuffer(l:listDict, l:listId)
 
 endfunction
@@ -159,7 +159,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   nmap <buffer> q <Plug>(close-list)
   nmap <buffer> <CR> <Plug>(lists-open)
 
-  call s:WriteDictToBuf(a:listDict)
+  call g:common#WriteDictToBuf(a:listDict)
 
 endfunction
 
@@ -194,7 +194,7 @@ function! DeleteCard(cardName)
     return
   endif
 
-  let l:cardId = s:GetIdFromLine(a:cardName)
+  let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cmd = s:DeleteCardCmd(l:cardId)
 
   echomsg "cmd: " . l:cmd
@@ -210,7 +210,7 @@ function! GetSingleCard(cardName)
     return
   endif
 
-  let l:cardId = s:GetIdFromLine(a:cardName)
+  let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cmd = s:GetSingleCardCmd(l:cardId)
 
   try
@@ -220,7 +220,7 @@ function! GetSingleCard(cardName)
     return
   endtry
 
-  let l:desc = s:GetDescFromRes(l:result)
+  let l:desc = g:common#GetDescFromRes(l:result)
   call s:OpenSingleCardNewBuffer(l:desc)
 
 endfunction
@@ -251,64 +251,6 @@ endfunction
 
 
 " =================================
-" 【Common】functions
-" =================================
-function! s:CheckEnv()
-  if !executable('curl')
-    throw "curl is not available"
-  endif
-  if !exists('g:vimTrelloApiKey')
-    throw "g:apiKey is not difined in your vimrc"
-  endif
-  if !exists('g:vimTrelloToken')
-    throw "g:token is not difined in your vimrc"
-  endif
-endfunction
-
-function! s:GetIdFromLine(line)
-  return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
-endfunction
-
-function! s:GetIdAndNameDictFromResList(responseList)
-  let l:dict = {}
-  for response in a:responseList
-    let l:dict[response['id']] = response['name']
-  endfor
-  echomsg l:dict
-  return l:dict
-endfunction
-
-function! s:GetDescFromRes(response)
-  let l:desc = 'desc'
-  if has_key(a:response, l:desc)
-    return a:response[l:desc]
-  endif
-  return ''
-endfunction
-
-function! s:WriteDictToBuf(dict)
-  echomsg keys(a:dict)
-  for key in keys(a:dict)
-    let l:row = a:dict[key] . "(" . key . ")"
-    call append(line(0), l:row)
-    echomsg l:row
-  endfor
-endfunction
-
-function! s:AddPostParams(url, idList, name)
-  let l:absolute_url = a:url
-  if a:idList == ""
-    throw  "param 'idList' is required to add new Card"
-  endif
-  if a:name != ""
-    let l:absolute_url = l:absolute_url .  "&name=" . a:name
-  endif
-  let l:absolute_url = l:absolute_url . "&idList=" . a:idList
-  return l:absolute_url
-endfunction
-
-
-" =================================
 " curl commands
 " =================================
 function! s:GetBoardsCmd()
@@ -333,7 +275,7 @@ endfunction
 
 function! s:AddNewCardCmd(listId, title)
   let l:path = "/1/cards"
-  let l:absolute_url = s:AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
+  let l:absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
   return  s:CurlPostCmd(l:absolute_url)
 endfunction
 
