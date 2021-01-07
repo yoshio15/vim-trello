@@ -54,3 +54,15 @@ function! g:common#AddPostParams(url, idList, name)
   let l:absolute_url = l:absolute_url . "&idList=" . a:idList
   return l:absolute_url
 endfunction
+
+
+" =================================
+" manipulate buffer
+" =================================
+function! g:common#CloseBuf()
+  execute 'bwipeout'
+endfunction
+
+function! g:common#OpenNewBuf(bufName)
+  execute 50 'vnew' a:bufName
+endfunction

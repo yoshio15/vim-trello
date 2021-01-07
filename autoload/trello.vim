@@ -41,7 +41,7 @@ endfunction
 " =================================
 function! s:OpenBoardsNewBuffer(boardDict)
 
-  call s:OpenNewBuf(s:boards_buffer)
+  call g:common#OpenNewBuf(s:boards_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -90,8 +90,8 @@ endfunction
 " =================================
 function! s:OpenListsNewBuffer(listDict)
 
-  call s:CloseBuf()
-  call s:OpenNewBuf(s:lists_buffer)
+  call g:common#CloseBuf()
+  call g:common#OpenNewBuf(s:lists_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -140,8 +140,8 @@ endfunction
 " =================================
 function! s:OpenCardsNewBuffer(listDict, listId)
 
-  call s:CloseBuf()
-  call s:OpenNewBuf(s:cards_buffer)
+  call g:common#CloseBuf()
+  call g:common#OpenNewBuf(s:cards_buffer)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
@@ -236,8 +236,8 @@ function! s:OpenSingleCardNewBuffer(desc)
     return
   endif
 
-  call s:CloseBuf()
-  call s:OpenNewBuf(s:single_card_buffer)
+  call g:common#CloseBuf()
+  call g:common#OpenNewBuf(s:single_card_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -298,18 +298,6 @@ endfunction
 
 function! s:BuildTrelloApiUrl(path)
   return "https://api.trello.com" . a:path . "?key=" . g:vimTrelloApiKey . "&token=" . g:vimTrelloToken
-endfunction
-
-
-" =================================
-" manipulate buffer
-" =================================
-function! s:CloseBuf()
-  execute 'bwipeout'
-endfunction
-
-function! s:OpenNewBuf(bufName)
-  execute 50 'vnew' a:bufName
 endfunction
 
 
