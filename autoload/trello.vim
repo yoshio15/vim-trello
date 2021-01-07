@@ -45,13 +45,13 @@ function! s:OpenBoardsNewBuffer(boardDict)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
-    \ <Plug>(close-list)
+    \ <Plug>(close-boards)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
-    \ <Plug>(lists-open)
+    \ <Plug>(open-boards)
     \ :<C-u>call GetLists(trim(getline('.')))<CR>
-  nmap <buffer> q <Plug>(close-list)
-  nmap <buffer> <CR> <Plug>(lists-open)
+  nmap <buffer> q <Plug>(close-boards)
+  nmap <buffer> <CR> <Plug>(open-boards)
 
   call g:common#WriteDictToBuf(a:boardDict)
 
@@ -95,13 +95,13 @@ function! s:OpenListsNewBuffer(listDict)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
-    \ <Plug>(close-list)
+    \ <Plug>(close-lists)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
-    \ <Plug>(lists-open)
+    \ <Plug>(open-lists)
     \ :<C-u>call GetCards(trim(getline('.')))<CR>
-  nmap <buffer> q <Plug>(close-list)
-  nmap <buffer> <CR> <Plug>(lists-open)
+  nmap <buffer> q <Plug>(close-lists)
+  nmap <buffer> <CR> <Plug>(open-lists)
 
   call g:common#WriteDictToBuf(a:listDict)
 
@@ -149,15 +149,15 @@ function! s:OpenCardsNewBuffer(listDict, listId)
     \ <Plug>(delete-card)
     \ :<C-u>call DeleteCard(trim(getline('.')))<CR>
   nnoremap <silent> <buffer>
-    \ <Plug>(close-list)
+    \ <Plug>(close-cards)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
-    \ <Plug>(lists-open)
+    \ <Plug>(open-cards)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> d <Plug>(delete-card)
-  nmap <buffer> q <Plug>(close-list)
-  nmap <buffer> <CR> <Plug>(lists-open)
+  nmap <buffer> q <Plug>(close-cards)
+  nmap <buffer> <CR> <Plug>(open-cards)
 
   call g:common#WriteDictToBuf(a:listDict)
 
