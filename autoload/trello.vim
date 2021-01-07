@@ -1,13 +1,4 @@
 " =================================
-" variables
-" =================================
-let s:boards_buffer = 'BOARDS'
-let s:lists_buffer = 'LISTS'
-let s:cards_buffer = 'CARDS'
-let s:single_card_buffer = 'CARD'
-
-
-" =================================
 " 【Main】vim-trello
 " =================================
 function! g:trello#VimTrello()
@@ -41,7 +32,8 @@ endfunction
 " =================================
 function! s:OpenBoardsNewBuffer(boardDict)
 
-  call g:common#OpenNewBuf(s:boards_buffer)
+  let l:boards_buffer = 'BOARDS'
+  call g:common#OpenNewBuf(l:boards_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -90,8 +82,9 @@ endfunction
 " =================================
 function! s:OpenListsNewBuffer(listDict)
 
+  let l:lists_buffer = 'LISTS'
   call g:common#CloseBuf()
-  call g:common#OpenNewBuf(s:lists_buffer)
+  call g:common#OpenNewBuf(l:lists_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
@@ -140,8 +133,9 @@ endfunction
 " =================================
 function! s:OpenCardsNewBuffer(listDict, listId)
 
+  let l:cards_buffer = 'CARDS'
   call g:common#CloseBuf()
-  call g:common#OpenNewBuf(s:cards_buffer)
+  call g:common#OpenNewBuf(l:cards_buffer)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
@@ -232,8 +226,9 @@ function! s:OpenSingleCardNewBuffer(desc)
     return
   endif
 
+  let l:single_card_buffer = 'CARD'
   call g:common#CloseBuf()
-  call g:common#OpenNewBuf(s:single_card_buffer)
+  call g:common#OpenNewBuf(l:single_card_buffer)
 
   set buftype=nofile
   nnoremap <silent> <buffer>
