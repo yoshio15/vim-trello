@@ -255,45 +255,33 @@ endfunction
 " =================================
 function! s:GetBoardsCmd()
   let l:path = "/1/members/me/boards"
-  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:GetListsCmd(boardId)
   let l:path = "/1/boards/" . a:boardId . "/lists"
-  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:GetCardsCmd(listId)
   let l:path = "/1/lists/" . a:listId . "/cards"
-  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:GetSingleCardCmd(cardId)
   let l:path = "/1/cards/" . a:cardId
-  return  s:CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:AddNewCardCmd(listId, title)
   let l:path = "/1/cards"
   let l:absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
-  return  s:CurlPostCmd(l:absolute_url)
+  return  g:curl#CurlPostCmd(l:absolute_url)
 endfunction
 
 function! s:DeleteCardCmd(cardId)
   let l:path = "/1/cards/" . a:cardId
-  return  s:CurlDeleteCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:CurlGetCmd(url)
-  return "curl -s --request GET --url '" . a:url . "'"
-endfunction
-
-function! s:CurlPostCmd(url)
-  return "curl -s --request POST --url '" . a:url . "'"
-endfunction
-
-function! s:CurlDeleteCmd(url)
-  return "curl -s --request DELETE --url '" . a:url . "'"
+  return  g:curl#CurlDeleteCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
 function! s:BuildTrelloApiUrl(path)
