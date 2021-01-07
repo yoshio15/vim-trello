@@ -176,10 +176,6 @@ endfunction
 
 " add single card
 function! AddNewCard(listId, title)
-  echomsg "==== add new card ===="
-  echomsg "title: " . a:title
-  echomsg "listid: " . a:listId
-  echomsg "======================"
   let l:cmd = s:AddNewCardCmd(a:listId, a:title)
   echomsg "cmd: " . l:cmd
   echomsg system(l:cmd)
