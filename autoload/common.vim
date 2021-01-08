@@ -22,7 +22,6 @@ function! g:common#GetIdAndNameDictFromResList(responseList)
   for response in a:responseList
     let l:dict[response['id']] = response['name']
   endfor
-  echomsg l:dict
   return l:dict
 endfunction
 
@@ -35,11 +34,9 @@ function! g:common#GetDescFromRes(response)
 endfunction
 
 function! g:common#WriteDictToBuf(dict)
-  echomsg keys(a:dict)
   for key in keys(a:dict)
     let l:row = a:dict[key] . "(" . key . ")"
     call append(line(0), l:row)
-    echomsg l:row
   endfor
 endfunction
 

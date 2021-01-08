@@ -11,7 +11,6 @@ function! g:trello#VimTrello()
   endtry
 
   let l:cmd = s:GetBoardsCmd()
-  echomsg l:cmd
 
   try
     let l:result = json_decode(system(cmd))
@@ -53,15 +52,12 @@ endfunction
 " get Boards from Lists
 function! GetLists(boardName)
 
-  echomsg a:boardName
   if a:boardName == ""
     return
   endif
 
   let l:boardId = g:common#GetIdFromLine(a:boardName)
-  echomsg l:boardId
   let l:cmd = s:GetListsCmd(l:boardId)
-  echomsg l:cmd
 
   try
     let l:result = json_decode(system(cmd))
@@ -104,15 +100,12 @@ endfunction
 " get Cards from Lists
 function! GetCards(listName)
 
-  echomsg a:listName
   if a:listName == ""
     return
   endif
 
   let l:listId = g:common#GetIdFromLine(a:listName)
-  echomsg l:listId
   let l:cmd = s:GetCardsCmd(l:listId)
-  echomsg l:cmd
 
   try
     let l:result = json_decode(system(cmd))
@@ -165,7 +158,6 @@ function! OpenAddNewTaskArea(listId)
   call AddNewCard(a:listId, l:userInput)
 
   " get latest cards
-  echomsg a:listId
   let l:cmd = s:GetCardsCmd(a:listId)
 
   try
@@ -184,15 +176,13 @@ endfunction
 " add single card
 function! AddNewCard(listId, title)
   let l:cmd = s:AddNewCardCmd(a:listId, a:title)
-  echomsg "cmd: " . l:cmd
-  echomsg system(l:cmd)
+  call system(l:cmd)
 endfunction
 
 
 " delete card
 function! DeleteCard(cardName, listId)
 
-  echomsg a:cardName
   if a:cardName == ""
     return
   endif
@@ -200,11 +190,9 @@ function! DeleteCard(cardName, listId)
   let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cmd = s:DeleteCardCmd(l:cardId)
 
-  echomsg "cmd: " . l:cmd
-  echomsg system(l:cmd)
+  call system(l:cmd)
 
   " get latest cards
-  echomsg a:listId
   let l:cmd = s:GetCardsCmd(a:listId)
 
   try
@@ -223,7 +211,6 @@ endfunction
 " get single card
 function! GetSingleCard(cardName)
 
-  echomsg a:cardName
   if a:cardName == ""
     return
   endif
