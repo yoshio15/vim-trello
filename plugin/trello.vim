@@ -1,1 +1,1 @@
-command! Trello call g:trello#VimTrello()
+command! VimTrello call g:trello#VimTrello()
