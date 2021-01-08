@@ -30,3 +30,6 @@ you can open your boards list of trello assosiaded with your Trello account by t
 
 ## Author
 Yoshio Kondo
+
+## License
+This software is released under the MIT License, see LICENSE.
