@@ -165,6 +165,21 @@ function! OpenAddNewTaskArea(listId)
   call inputrestore()
 
   call AddNewCard(a:listId, l:userInput)
+
+  " get latest cards
+  echomsg a:listId
+  let l:cmd = s:GetCardsCmd(a:listId)
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
+  " show latest cards
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  call s:OpenCardsNewBuffer(l:listDict, a:listId)
 endfunction
 
 
