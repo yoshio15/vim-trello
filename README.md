@@ -1,6 +1,8 @@
 # vim-trello
 Vim plugin for [Trello](https://trello.com/)
 
+![vim-trello](https://user-images.githubusercontent.com/51875964/104023434-052bc200-5205-11eb-823d-de5640850cc7.gif)
+
 ## Installation
 ### vim-plug
 ```vim
