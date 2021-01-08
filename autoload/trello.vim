@@ -139,9 +139,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
-  nnoremap <silent> <buffer>
-    \ <Plug>(delete-card)
-    \ :<C-u>call DeleteCard(trim(getline('.')))<CR>
+  exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '")<CR>'
   nnoremap <silent> <buffer>
     \ <Plug>(close-cards)
     \ :<C-u>bwipeout!<CR>
@@ -192,7 +190,7 @@ endfunction
 
 
 " delete card
-function! DeleteCard(cardName)
+function! DeleteCard(cardName, listId)
 
   echomsg a:cardName
   if a:cardName == ""
@@ -204,6 +202,21 @@ function! DeleteCard(cardName)
 
   echomsg "cmd: " . l:cmd
   echomsg system(l:cmd)
+
+  " get latest cards
+  echomsg a:listId
+  let l:cmd = s:GetCardsCmd(a:listId)
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
+  " show latest cards
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  call s:OpenCardsNewBuffer(l:listDict, a:listId)
 
 endfunction
 
