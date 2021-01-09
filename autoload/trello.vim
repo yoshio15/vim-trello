@@ -25,6 +25,20 @@ function! g:trello#VimTrello()
 endfunction
 
 
+function! GetBoards()
+  let l:cmd = s:GetBoardsCmd()
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+  let l:boardDict = g:common#GetIdAndNameDictFromResList(l:result)
+  call g:common#CloseBuf()
+  call s:OpenBoardsNewBuffer(l:boardDict)
+endfunction
+
+
 " =================================
 " show Boards in new buffer
 "  - Boards Buffer Setting
@@ -84,12 +98,14 @@ function! s:OpenListsNewBuffer(listDict)
   call g:common#OpenNewBuf(l:lists_buffer)
 
   set buftype=nofile
+  nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(close-lists)
     \ :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer>
     \ <Plug>(open-lists)
     \ :<C-u>call GetCards(trim(getline('.')))<CR>
+  nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
 
