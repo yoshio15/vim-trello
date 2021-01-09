@@ -49,12 +49,8 @@ function! s:OpenBoardsNewBuffer(boardDict)
   call g:common#OpenNewBuf(l:boards_buffer)
 
   set buftype=nofile
-  nnoremap <silent> <buffer>
-    \ <Plug>(close-boards)
-    \ :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer>
-    \ <Plug>(open-boards)
-    \ :<C-u>call GetLists(trim(getline('.')))<CR>
+  nnoremap <silent> <buffer> <Plug>(close-boards) :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call GetLists(trim(getline('.')))<CR>
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
 
@@ -109,9 +105,7 @@ function! s:OpenListsNewBuffer(listDict, boardId)
 
   set buftype=nofile
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
-  nnoremap <silent> <buffer>
-    \ <Plug>(close-lists)
-    \ :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards(trim(getline(".")), "' . a:boardId . '")<CR>'
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> q <Plug>(close-lists)
@@ -170,12 +164,8 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '")<CR>'
-  nnoremap <silent> <buffer>
-    \ <Plug>(close-cards)
-    \ :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer>
-    \ <Plug>(open-cards)
-    \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
+  nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> b <Plug>(get-lists)
   nmap <buffer> d <Plug>(delete-card)
@@ -297,9 +287,7 @@ function! s:OpenSingleCardNewBuffer(desc)
   call g:common#OpenNewBuf(l:single_card_buffer)
 
   set buftype=nofile
-  nnoremap <silent> <buffer>
-    \ <Plug>(close-buf)
-    \ :<C-u>bwipeout!<CR>
+  nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
   nmap <buffer> q <Plug>(close-buf)
 
   call setline(1, a:desc)
