@@ -58,8 +58,16 @@ function! s:OpenBoardsNewBuffer(boardDict)
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
 
+  let l:desc_a_key = '(a)dd new Board'
+  let l:desc_d_key = '(d)elete a Board'
+  let l:desc_q_key = '(q) close buffer'
+
   call g:common#WriteDictToBuf(a:boardDict)
   call g:common#WriteTitleToBuf('[YOUR BOARDS]')
+  call append(0, '')
+  call append(0, '============================')
+  call append(0, l:desc_q_key)
+  call append(0, '========= key map ==========')
 
 endfunction
 
@@ -109,8 +117,18 @@ function! s:OpenListsNewBuffer(listDict, boardId)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
 
+  let l:desc_a_key = '(a)dd new List'
+  let l:desc_b_key = '(b)ack to boards'
+  let l:desc_d_key = '(d)elete a List'
+  let l:desc_q_key = '(q) close buffer'
+
   call g:common#WriteDictToBuf(a:listDict)
   call g:common#WriteTitleToBuf('[LISTS of the Board]')
+  call append(0, '')
+  call append(0, '============================')
+  call append(0, l:desc_q_key)
+  call append(0, l:desc_b_key)
+  call append(0, '========= key map ==========')
 
 endfunction
 
@@ -164,8 +182,20 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
   nmap <buffer> q <Plug>(close-cards)
   nmap <buffer> <CR> <Plug>(open-cards)
 
+  let l:desc_a_key = '(a)dd new Task'
+  let l:desc_b_key = '(b)ack to Lists'
+  let l:desc_d_key = '(d)elete a Task'
+  let l:desc_q_key = '(q) close buffer'
+
   call g:common#WriteDictToBuf(a:listDict)
   call g:common#WriteTitleToBuf('[TASKS]')
+  call append(0, '')
+  call append(0, '============================')
+  call append(0, l:desc_q_key)
+  call append(0, l:desc_d_key)
+  call append(0, l:desc_b_key)
+  call append(0, l:desc_a_key)
+  call append(0, '========= key map ==========')
 
 endfunction
 
