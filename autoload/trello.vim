@@ -72,18 +72,20 @@ function! GetLists(boardName)
   endif
 
   let l:boardId = g:common#GetIdFromLine(a:boardName)
-  let l:cmd = s:GetListsCmd(l:boardId)
+  call GetListsByBoardId(l:boardId)
 
+endfunction
+
+function! GetListsByBoardId(boardId)
+  let l:cmd = s:GetListsCmd(a:boardId)
   try
     let l:result = json_decode(system(cmd))
   catch
     echomsg v:exception
     return
   endtry
-
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call s:OpenListsNewBuffer(l:listDict)
-
+  call s:OpenListsNewBuffer(l:listDict, a:boardId)
 endfunction
 
 
@@ -91,7 +93,7 @@ endfunction
 " show Lists in new buffer
 "  - Lists Buffer Setting
 " =================================
-function! s:OpenListsNewBuffer(listDict)
+function! s:OpenListsNewBuffer(listDict, boardId)
 
   let l:lists_buffer = 'LISTS'
   call g:common#CloseBuf()
@@ -102,9 +104,7 @@ function! s:OpenListsNewBuffer(listDict)
   nnoremap <silent> <buffer>
     \ <Plug>(close-lists)
     \ :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer>
-    \ <Plug>(open-lists)
-    \ :<C-u>call GetCards(trim(getline('.')))<CR>
+  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards(trim(getline(".")), "' . a:boardId . '")<CR>'
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
@@ -116,7 +116,7 @@ endfunction
 
 
 " get Cards from Lists
-function! GetCards(listName)
+function! GetCards(listName, boardId)
 
   if a:listName == ""
     return
@@ -133,7 +133,7 @@ function! GetCards(listName)
   endtry
 
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call s:OpenCardsNewBuffer(l:listDict, l:listId)
+  call s:OpenCardsNewBuffer(l:listDict, l:listId, a:boardId)
 
 endfunction
 
@@ -142,7 +142,7 @@ endfunction
 " show Cards in new buffer
 "  - Cards Buffer Setting
 " =================================
-function! s:OpenCardsNewBuffer(listDict, listId)
+function! s:OpenCardsNewBuffer(listDict, listId, boardId)
 
   let l:cards_buffer = 'CARDS'
   call g:common#CloseBuf()
@@ -150,6 +150,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '")<CR>'
   nnoremap <silent> <buffer>
     \ <Plug>(close-cards)
@@ -158,6 +159,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
     \ <Plug>(open-cards)
     \ :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
+  nmap <buffer> b <Plug>(get-lists)
   nmap <buffer> d <Plug>(delete-card)
   nmap <buffer> q <Plug>(close-cards)
   nmap <buffer> <CR> <Plug>(open-cards)
