@@ -59,7 +59,7 @@ function! s:OpenBoardsNewBuffer(boardDict)
   let l:desc_q_key = '(q) close buffer'
 
   call g:common#WriteDictToBuf(a:boardDict)
-  call g:common#WriteTitleToBuf('[YOUR BOARDS]')
+  call g:common#WriteTitleToBuf('[BOARDS]')
   call append(0, '')
   call append(0, '============================')
   call append(0, l:desc_q_key)
