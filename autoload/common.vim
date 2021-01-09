@@ -63,3 +63,8 @@ endfunction
 function! g:common#OpenNewBuf(bufName)
   execute 50 'vnew' a:bufName
 endfunction
+
+function! g:common#WriteTitleToBuf(title)
+  call append(0, a:title)
+  call append(1, '')
+endfunction

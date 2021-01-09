@@ -45,6 +45,7 @@ function! s:OpenBoardsNewBuffer(boardDict)
   nmap <buffer> <CR> <Plug>(open-boards)
 
   call g:common#WriteDictToBuf(a:boardDict)
+  call g:common#WriteTitleToBuf('[YOUR BOARDS]')
 
 endfunction
 
@@ -93,6 +94,7 @@ function! s:OpenListsNewBuffer(listDict)
   nmap <buffer> <CR> <Plug>(open-lists)
 
   call g:common#WriteDictToBuf(a:listDict)
+  call g:common#WriteTitleToBuf('[LISTS of the Board]')
 
 endfunction
 
@@ -145,6 +147,7 @@ function! s:OpenCardsNewBuffer(listDict, listId)
   nmap <buffer> <CR> <Plug>(open-cards)
 
   call g:common#WriteDictToBuf(a:listDict)
+  call g:common#WriteTitleToBuf('[TASKS]')
 
 endfunction
 
@@ -252,6 +255,7 @@ function! s:OpenSingleCardNewBuffer(desc)
   nmap <buffer> q <Plug>(close-buf)
 
   call setline(1, a:desc)
+  call g:common#WriteTitleToBuf('[Detail of a TASK]')
 
 endfunction
 
