@@ -17,6 +17,10 @@ function! g:common#GetIdFromLine(line)
   return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
 
+function! g:common#GetTitleFromLine(line)
+  return a:line[0 : stridx(a:line,'(') - 1]
+endfunction
+
 function! g:common#GetIdAndNameDictFromResList(responseList)
   let l:dict = {}
   for response in a:responseList
