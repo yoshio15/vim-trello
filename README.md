@@ -44,6 +44,7 @@ you can open your boards list of trello assosiaded with your Trello account by t
 | a | add new Task |
 | b | back to Lists |
 | d | delete the Task |
+| e | edit the title of Task |
 | q | close buffer |
 | Enter | show the Task |
 
