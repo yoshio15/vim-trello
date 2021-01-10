@@ -45,7 +45,7 @@ function! OpenAddNewTaskArea(listId, boardId)
   let l:userInput=input("Enter title of card which you want to add.\nTask name: ")
   call inputrestore()
 
-  call AddNewCard(a:listId, l:userInput)
+  call AddNewCard(a:listId, UrlEncode(l:userInput))
 
   " get latest cards
   let l:cmd = g:command#GetCardsCmd(a:listId)
