@@ -140,6 +140,17 @@ function! GetCards(listName, boardId)
 
   let l:listId = g:common#GetIdFromLine(a:listName)
   call GetCardsById(l:listId, a:boardId)
+  let l:cmd = g:command#GetCardsCmd(l:listId)
+
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
+
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  call s:OpenCardsNewBuffer(l:listDict, l:listId, a:boardId)
 
 endfunction
 
@@ -276,41 +287,7 @@ function! GetSingleCard(cardName, listId, boardId)
   endtry
 
   let l:desc = g:common#GetDescFromRes(l:result)
-  call s:OpenSingleCardNewBuffer(l:desc, a:listId, a:boardId)
-
-endfunction
-
-
-" =================================
-" show description of single card in new buffer
-"  - Description of single card Buffer Setting
-" =================================
-function! s:OpenSingleCardNewBuffer(desc, listId, boardId)
-
-  if a:desc == ""
-    return
-  endif
-
-  let l:single_card_buffer = 'CARD'
-  call g:common#CloseBuf()
-  call g:common#OpenNewBuf(l:single_card_buffer)
-
-  set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
-  nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
-  nmap <buffer> b <Plug>(get-cards)
-  nmap <buffer> q <Plug>(close-buf)
-
-  let l:desc_b_key = '(b)ack to Cards'
-  let l:desc_q_key = '(q) close buffer'
-
-  call setline(1, a:desc)
-  call g:common#WriteTitleToBuf('[Detail of a TASK]')
-  call append(0, '')
-  call append(0, '============================')
-  call append(0, l:desc_q_key)
-  call append(0, l:desc_b_key)
-  call append(0, '========= key map ==========')
+  call g:task_detail#OpenSingleCardNewBuffer(l:desc, a:listId, a:boardId)
 
 endfunction
 
