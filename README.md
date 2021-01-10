@@ -25,13 +25,33 @@ let g:vimTrelloToken = '{your token}'
 you can open your boards list of trello assosiaded with your Trello account by this command.  
 
 ## Key Map
+### ■ Boards
 | key | action |
 | --- | ------ |
-| a | add new card |
-| b | back |
 | q | close buffer |
-| d | delete a card |
-| Enter | show {Boards/Lists/Tasks/Task} |
+| Enter | show the Board |
+
+### ■ Lists
+| key | action |
+| --- | ------ |
+| b | back to Boards |
+| q | close buffer |
+| Enter | show the List |
+
+### ■ Tasks
+| key | action |
+| --- | ------ |
+| a | add new Task |
+| b | back to Lists |
+| d | delete the Task |
+| q | close buffer |
+| Enter | show the Task |
+
+### ■ Task Detail
+| key | action |
+| --- | ------ |
+| b | back to Tasks |
+| q | close buffer |
 
 ## Author
 Yoshio Kondo
