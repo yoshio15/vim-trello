@@ -27,6 +27,7 @@ endfunction
 
 " =================================
 " for debug
+"  - off comment out function-call below
 "  - debug this script by `:so %`
 " =================================
-call g:trello#VimTrello()
+" call g:trello#VimTrello()
