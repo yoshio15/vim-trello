@@ -11,11 +11,13 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(edit-card) :<C-u>call EditCardTitle(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> b <Plug>(get-lists)
   nmap <buffer> d <Plug>(delete-card)
+  nmap <buffer> e <Plug>(edit-card)
   nmap <buffer> q <Plug>(close-cards)
   nmap <buffer> <CR> <Plug>(open-cards)
 
@@ -58,6 +60,19 @@ function! OpenAddNewTaskArea(listId, boardId)
   endtry
 
   " show latest cards
+  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
+endfunction
+
+
+function! s:GetLatestCards(listId, boardId)
+  let l:cmd = g:command#GetCardsCmd(a:listId)
+  try
+    let l:result = json_decode(system(cmd))
+  catch
+    echomsg v:exception
+    return
+  endtry
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
   call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
 endfunction
@@ -117,5 +132,24 @@ function! GetSingleCard(cardName, listId, boardId)
 
   let l:desc = g:common#GetDescFromRes(l:result)
   call g:task_detail#OpenSingleCardNewBuffer(l:desc, a:listId, a:boardId)
+
+endfunction
+
+
+function! EditCardTitle(cardName, listId, boardId)
+
+  if a:cardName == ""
+    return
+  endif
+
+  call inputsave()
+  let l:userInput=input("Edit title of the card.\nTask name: ")
+  call inputrestore()
+
+  let l:cardId = g:common#GetIdFromLine(a:cardName)
+  let l:cmd = g:command#UpdateCardTitleCmd(l:cardId, UrlEncode(l:userInput))
+
+  call system(l:cmd)
+  call s:GetLatestCards(a:listId, a:boardId)
 
 endfunction

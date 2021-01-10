@@ -22,6 +22,12 @@ function! g:command#GetSingleCardCmd(cardId)
   return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
+function! g:command#UpdateCardTitleCmd(cardId, title)
+  let l:path = "/1/cards/" . a:cardId
+  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&name=' . a:title
+  return  g:curl#CurlPutCmd(l:absolute_url)
+endfunction
+
 function! g:command#AddNewCardCmd(listId, title)
   let l:path = "/1/cards"
   let l:absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
