@@ -24,6 +24,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   let l:desc_a_key = '(a)dd new Task'
   let l:desc_b_key = '(b)ack to Lists'
   let l:desc_d_key = '(d)elete a Task'
+  let l:desc_e_key = '(e)dit the title of Task'
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show detail of Task'
 
@@ -33,6 +34,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   call append(0, '============================')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
+  call append(0, l:desc_e_key)
   call append(0, l:desc_d_key)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
@@ -129,11 +131,13 @@ function! EditCardTitle(cardName, listId, boardId)
     return
   endif
 
+  let l:cardId = g:common#GetIdFromLine(a:cardName)
+  let l:cardTitle = g:common#GetTitleFromLine(a:cardName)
+
   call inputsave()
-  let l:userInput=input("Edit title of the card.\nTask name: ")
+  let l:userInput = input("Edit title of the card.\nTask name: ", l:cardTitle)
   call inputrestore()
 
-  let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cmd = g:command#UpdateCardTitleCmd(l:cardId, UrlEncode(l:userInput))
 
   call system(l:cmd)
