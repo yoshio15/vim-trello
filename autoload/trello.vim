@@ -139,18 +139,21 @@ function! GetCards(listName, boardId)
   endif
 
   let l:listId = g:common#GetIdFromLine(a:listName)
-  let l:cmd = g:command#GetCardsCmd(l:listId)
+  call GetCardsById(l:listId, a:boardId)
 
+endfunction
+
+
+function! GetCardsById(listId, boardId)
+  let l:cmd = g:command#GetCardsCmd(a:listId)
   try
     let l:result = json_decode(system(cmd))
   catch
     echomsg v:exception
     return
   endtry
-
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call s:OpenCardsNewBuffer(l:listDict, l:listId, a:boardId)
-
+  call s:OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
 endfunction
 
 
@@ -168,8 +171,8 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> b <Plug>(get-lists)
   nmap <buffer> d <Plug>(delete-card)
@@ -256,7 +259,7 @@ function! DeleteCard(cardName, listId, boardId)
 endfunction
 
 " get single card
-function! GetSingleCard(cardName)
+function! GetSingleCard(cardName, listId, boardId)
 
   if a:cardName == ""
     return
@@ -273,7 +276,7 @@ function! GetSingleCard(cardName)
   endtry
 
   let l:desc = g:common#GetDescFromRes(l:result)
-  call s:OpenSingleCardNewBuffer(l:desc)
+  call s:OpenSingleCardNewBuffer(l:desc, a:listId, a:boardId)
 
 endfunction
 
@@ -282,7 +285,7 @@ endfunction
 " show description of single card in new buffer
 "  - Description of single card Buffer Setting
 " =================================
-function! s:OpenSingleCardNewBuffer(desc)
+function! s:OpenSingleCardNewBuffer(desc, listId, boardId)
 
   if a:desc == ""
     return
@@ -293,7 +296,9 @@ function! s:OpenSingleCardNewBuffer(desc)
   call g:common#OpenNewBuf(l:single_card_buffer)
 
   set buftype=nofile
+  exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
+  nmap <buffer> b <Plug>(get-cards)
   nmap <buffer> q <Plug>(close-buf)
 
   let l:desc_b_key = '(b)ack to Cards'
@@ -304,6 +309,7 @@ function! s:OpenSingleCardNewBuffer(desc)
   call append(0, '')
   call append(0, '============================')
   call append(0, l:desc_q_key)
+  call append(0, l:desc_b_key)
   call append(0, '========= key map ==========')
 
 endfunction
