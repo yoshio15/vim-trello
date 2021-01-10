@@ -167,7 +167,7 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
-  exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
   nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline('.')))<CR>
   nmap <buffer> a <Plug>(add-card)
@@ -228,7 +228,7 @@ endfunction
 
 
 " delete card
-function! DeleteCard(cardName, listId)
+function! DeleteCard(cardName, listId, boardId)
 
   if a:cardName == ""
     return
@@ -251,7 +251,7 @@ function! DeleteCard(cardName, listId)
 
   " show latest cards
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call s:OpenCardsNewBuffer(l:listDict, a:listId)
+  call s:OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
 
 endfunction
 
