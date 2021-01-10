@@ -296,8 +296,15 @@ function! s:OpenSingleCardNewBuffer(desc)
   nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
   nmap <buffer> q <Plug>(close-buf)
 
+  let l:desc_b_key = '(b)ack to Cards'
+  let l:desc_q_key = '(q) close buffer'
+
   call setline(1, a:desc)
   call g:common#WriteTitleToBuf('[Detail of a TASK]')
+  call append(0, '')
+  call append(0, '============================')
+  call append(0, l:desc_q_key)
+  call append(0, '========= key map ==========')
 
 endfunction
 
