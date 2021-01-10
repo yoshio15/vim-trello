@@ -48,20 +48,7 @@ function! OpenAddNewTaskArea(listId, boardId)
   call inputrestore()
 
   call AddNewCard(a:listId, UrlEncode(l:userInput))
-
-  " get latest cards
-  let l:cmd = g:command#GetCardsCmd(a:listId)
-
-  try
-    let l:result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-
-  " show latest cards
-  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
+  call s:GetLatestCards(a:listId, a:boardId)
 endfunction
 
 
