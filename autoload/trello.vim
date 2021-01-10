@@ -165,7 +165,7 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
   call g:common#OpenNewBuf(l:cards_buffer)
 
   set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
@@ -196,7 +196,7 @@ function! s:OpenCardsNewBuffer(listDict, listId, boardId)
 endfunction
 
 
-function! OpenAddNewTaskArea(listId)
+function! OpenAddNewTaskArea(listId, boardId)
   " accept user input
   call inputsave()
   let l:userInput=input("Enter title of card which you want to add.\nTask name: ")
@@ -216,7 +216,7 @@ function! OpenAddNewTaskArea(listId)
 
   " show latest cards
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call s:OpenCardsNewBuffer(l:listDict, a:listId)
+  call s:OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
 endfunction
 
 
