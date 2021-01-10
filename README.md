@@ -8,6 +8,7 @@ Vim plugin for [Trello](https://trello.com/)
 ```vim
 Plug 'yoshio15/vim-trello', { 'branch': 'main' }
 ```
+and execute `:PlugInstall` command to install vim-trello.
 
 ## Setting
 set your [api key and token of Trello](https://trello.com/app-key) in your vimrc.
@@ -27,8 +28,10 @@ you can open your boards list of trello assosiaded with your Trello account by t
 | key | action |
 | --- | ------ |
 | a | add new card |
+| b | back |
 | q | close buffer |
 | d | delete a card |
+| Enter | show {Boards/Lists/Tasks/Task} |
 
 ## Author
 Yoshio Kondo
