@@ -10,7 +10,7 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let l:cmd = s:GetBoardsCmd()
+  let l:cmd = g:command#GetBoardsCmd()
 
   try
     let l:result = json_decode(system(cmd))
@@ -26,7 +26,7 @@ endfunction
 
 
 function! GetBoards()
-  let l:cmd = s:GetBoardsCmd()
+  let l:cmd = g:command#GetBoardsCmd()
   try
     let l:result = json_decode(system(cmd))
   catch
@@ -83,7 +83,7 @@ function! GetLists(boardName)
 endfunction
 
 function! GetListsByBoardId(boardId)
-  let l:cmd = s:GetListsCmd(a:boardId)
+  let l:cmd = g:command#GetListsCmd(a:boardId)
   try
     let l:result = json_decode(system(cmd))
   catch
@@ -139,7 +139,7 @@ function! GetCards(listName, boardId)
   endif
 
   let l:listId = g:common#GetIdFromLine(a:listName)
-  let l:cmd = s:GetCardsCmd(l:listId)
+  let l:cmd = g:command#GetCardsCmd(l:listId)
 
   try
     let l:result = json_decode(system(cmd))
@@ -205,7 +205,7 @@ function! OpenAddNewTaskArea(listId)
   call AddNewCard(a:listId, l:userInput)
 
   " get latest cards
-  let l:cmd = s:GetCardsCmd(a:listId)
+  let l:cmd = g:command#GetCardsCmd(a:listId)
 
   try
     let l:result = json_decode(system(cmd))
@@ -222,7 +222,7 @@ endfunction
 
 " add single card
 function! AddNewCard(listId, title)
-  let l:cmd = s:AddNewCardCmd(a:listId, a:title)
+  let l:cmd = g:command#AddNewCardCmd(a:listId, a:title)
   call system(l:cmd)
 endfunction
 
@@ -235,12 +235,12 @@ function! DeleteCard(cardName, listId)
   endif
 
   let l:cardId = g:common#GetIdFromLine(a:cardName)
-  let l:cmd = s:DeleteCardCmd(l:cardId)
+  let l:cmd = g:command#DeleteCardCmd(l:cardId)
 
   call system(l:cmd)
 
   " get latest cards
-  let l:cmd = s:GetCardsCmd(a:listId)
+  let l:cmd = g:command#GetCardsCmd(a:listId)
 
   try
     let l:result = json_decode(system(cmd))
@@ -263,7 +263,7 @@ function! GetSingleCard(cardName)
   endif
 
   let l:cardId = g:common#GetIdFromLine(a:cardName)
-  let l:cmd = s:GetSingleCardCmd(l:cardId)
+  let l:cmd = g:command#GetSingleCardCmd(l:cardId)
 
   try
     let l:result = json_decode(system(cmd))
@@ -299,45 +299,6 @@ function! s:OpenSingleCardNewBuffer(desc)
   call setline(1, a:desc)
   call g:common#WriteTitleToBuf('[Detail of a TASK]')
 
-endfunction
-
-
-" =================================
-" curl commands
-" =================================
-function! s:GetBoardsCmd()
-  let l:path = "/1/members/me/boards"
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:GetListsCmd(boardId)
-  let l:path = "/1/boards/" . a:boardId . "/lists"
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:GetCardsCmd(listId)
-  let l:path = "/1/lists/" . a:listId . "/cards"
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:GetSingleCardCmd(cardId)
-  let l:path = "/1/cards/" . a:cardId
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:AddNewCardCmd(listId, title)
-  let l:path = "/1/cards"
-  let l:absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
-  return  g:curl#CurlPostCmd(l:absolute_url)
-endfunction
-
-function! s:DeleteCardCmd(cardId)
-  let l:path = "/1/cards/" . a:cardId
-  return  g:curl#CurlDeleteCmd(s:BuildTrelloApiUrl(l:path))
-endfunction
-
-function! s:BuildTrelloApiUrl(path)
-  return "https://api.trello.com" . a:path . "?key=" . g:vimTrelloApiKey . "&token=" . g:vimTrelloToken
 endfunction
 
 
