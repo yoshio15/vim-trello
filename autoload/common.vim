@@ -38,10 +38,12 @@ function! g:common#GetDescFromRes(response)
 endfunction
 
 function! g:common#WriteDictToBuf(dict)
+  call append(0, '----------------------------')
   for key in keys(a:dict)
     let l:row = a:dict[key] . "(" . key . ")"
     call append(line(0), l:row)
   endfor
+  call append(0, '----------------------------')
 endfunction
 
 function! g:common#AddPostParams(url, idList, name)

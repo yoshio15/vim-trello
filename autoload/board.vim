@@ -18,12 +18,11 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
   let l:desc_enter_key = '(Enter) show Board'
 
   call g:common#WriteDictToBuf(a:boardDict)
-  call g:common#WriteTitleToBuf('[BOARDS]')
+  call append(0, '" select Board below.')
   call append(0, '')
-  call append(0, '============================')
+  call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
-  call append(0, '========= key map ==========')
 
 endfunction
 

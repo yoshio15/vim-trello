@@ -22,13 +22,12 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   let l:desc_enter_key = '(Enter) show Tasks'
 
   call g:common#WriteDictToBuf(a:listDict)
-  call g:common#WriteTitleToBuf('[LISTS of the Board]')
+  call append(0, '" select List below.')
   call append(0, '')
-  call append(0, '============================')
+  call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
   call append(0, l:desc_b_key)
-  call append(0, '========= key map ==========')
 
 endfunction
 
