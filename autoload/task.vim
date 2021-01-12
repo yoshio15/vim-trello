@@ -49,20 +49,7 @@ function! OpenAddNewTaskArea(listId, boardId)
   call inputrestore()
 
   call AddNewCard(a:listId, UrlEncode(l:userInput))
-  call s:GetLatestCards(a:listId, a:boardId)
-endfunction
-
-
-function! s:GetLatestCards(listId, boardId)
-  let l:cmd = g:command#GetCardsCmd(a:listId)
-  try
-    let l:result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
+  call GetCardsById(a:listId, a:boardId)
 endfunction
 
 
@@ -82,22 +69,8 @@ function! DeleteCard(cardName, listId, boardId)
 
   let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cmd = g:command#DeleteCardCmd(l:cardId)
-
   call system(l:cmd)
-
-  " get latest cards
-  let l:cmd = g:command#GetCardsCmd(a:listId)
-
-  try
-    let l:result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-
-  " show latest cards
-  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
+  call GetCardsById(a:listId, a:boardId)
 
 endfunction
 
@@ -140,6 +113,6 @@ function! EditCardTitle(cardName, listId, boardId)
   let l:cmd = g:command#UpdateCardTitleCmd(l:cardId, UrlEncode(l:userInput))
 
   call system(l:cmd)
-  call s:GetLatestCards(a:listId, a:boardId)
+  call GetCardsById(a:listId, a:boardId)
 
 endfunction

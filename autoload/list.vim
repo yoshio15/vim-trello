@@ -34,25 +34,11 @@ endfunction
 
 " get Cards from Lists
 function! GetCards(listName, boardId)
-
   if a:listName == ""
     return
   endif
-
   let l:listId = g:common#GetIdFromLine(a:listName)
   call GetCardsById(l:listId, a:boardId)
-  let l:cmd = g:command#GetCardsCmd(l:listId)
-
-  try
-    let l:result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-
-  let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call g:task#OpenCardsNewBuffer(l:listDict, l:listId, a:boardId)
-
 endfunction
 
 
