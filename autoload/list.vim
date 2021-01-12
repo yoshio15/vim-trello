@@ -8,9 +8,11 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call g:common#OpenNewBuf(l:lists_buffer)
 
   set buftype=nofile
+  exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call OpenAddNewListArea("' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards(trim(getline(".")), "' . a:boardId . '")<CR>'
+  nmap <buffer> a <Plug>(add-list)
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
@@ -29,6 +31,22 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, l:desc_q_key)
   call append(0, l:desc_b_key)
 
+endfunction
+
+
+function! OpenAddNewListArea(boardId)
+  call inputsave()
+  let l:userInput=input("Enter title of List which you want to add.\nnew List name: ")
+  call inputrestore()
+
+  " call AddNewCard(a:listId, UrlEncode(l:userInput))
+  " call GetCardsById(a:listId, a:boardId)
+endfunction
+
+
+function! AddNewList(boardId, title)
+  " let l:cmd = g:command#AddNewCardCmd(a:listId, a:title)
+  " call system(l:cmd)
 endfunction
 
 
