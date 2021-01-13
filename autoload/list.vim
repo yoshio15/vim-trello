@@ -10,10 +10,12 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call OpenAddNewListArea("' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
+  exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards(trim(getline(".")), "' . a:boardId . '")<CR>'
   nmap <buffer> a <Plug>(add-list)
   nmap <buffer> b <Plug>(get-boards)
+  nmap <buffer> d <Plug>(delete-list)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
 
@@ -29,6 +31,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
+  call append(0, l:desc_d_key)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
 
@@ -50,6 +53,15 @@ function! AddNewList(boardId, title)
   call system(l:cmd)
 endfunction
 
+function! DeleteList(listName, boardId)
+  if a:listName == ""
+    return
+  endif
+  let l:listId = g:common#GetIdFromLine(a:listName)
+  let l:cmd = g:command#DeleteListCmd(l:listId)
+  call system(l:cmd)
+  call GetListsByBoardId(a:boardId)
+endfunction
 
 " get Cards from Lists
 function! GetCards(listName, boardId)

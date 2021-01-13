@@ -23,6 +23,12 @@ function! g:command#AddNewListCmd(boardId, title)
   return  g:curl#CurlPostCmd(l:absolute_url)
 endfunction
 
+function! g:command#DeleteListCmd(listId)
+  let l:path = "/1/lists/" . a:listId . "/closed"
+  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&value=true'
+  return  g:curl#CurlPutCmd(l:absolute_url)
+endfunction
+
 function! g:command#GetSingleCardCmd(cardId)
   let l:path = "/1/cards/" . a:cardId
   return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
