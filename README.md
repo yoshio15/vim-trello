@@ -36,6 +36,7 @@ you can open your boards list of trello assosiaded with your Trello account by t
 | --- | ------ |
 | a | add new List |
 | b | back to Boards |
+| d | delete(archive) the List |
 | q | close buffer |
 | Enter | show the List |
 
