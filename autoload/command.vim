@@ -17,6 +17,12 @@ function! g:command#GetCardsCmd(listId)
   return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
 endfunction
 
+function! g:command#AddNewListCmd(boardId, title)
+  let l:path = "/1/lists"
+  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&idBoard=' . a:boardId . '&name=' . a:title
+  return  g:curl#CurlPostCmd(l:absolute_url)
+endfunction
+
 function! g:command#GetSingleCardCmd(cardId)
   let l:path = "/1/cards/" . a:cardId
   return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))

@@ -30,6 +30,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
   call append(0, l:desc_b_key)
+  call append(0, l:desc_a_key)
 
 endfunction
 
@@ -39,14 +40,14 @@ function! OpenAddNewListArea(boardId)
   let l:userInput=input("Enter title of List which you want to add.\nnew List name: ")
   call inputrestore()
 
-  " call AddNewCard(a:listId, UrlEncode(l:userInput))
-  " call GetCardsById(a:listId, a:boardId)
+  call AddNewList(a:boardId, UrlEncode(l:userInput))
+  call GetListsByBoardId(a:boardId)
 endfunction
 
 
 function! AddNewList(boardId, title)
-  " let l:cmd = g:command#AddNewCardCmd(a:listId, a:title)
-  " call system(l:cmd)
+  let l:cmd = g:command#AddNewListCmd(a:boardId, a:title)
+  call system(l:cmd)
 endfunction
 
 
