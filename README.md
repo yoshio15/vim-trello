@@ -1,5 +1,6 @@
 # vim-trello
-Vim plugin for [Trello](https://trello.com/)
+Vim plugin for [Trello](https://trello.com/)  
+Japanese README.md is [here](https://github.com/yoshio15/vim-trello/blob/main/README_ja.md).
 
 ![vim-trello2](https://user-images.githubusercontent.com/51875964/104024220-204b0180-5206-11eb-8a3d-e05e1ac473f3.gif)
 
