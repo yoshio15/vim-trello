@@ -22,18 +22,85 @@ License : MIT license  {{{
 }}}
 
 ==============================================================================
-CONTENTS					*vimtrello-contents*
+CONTENTS					*vim_trello-contents*
 
- 1. INTRODUCTION			|vimtrello-introduction|
- 2. USAGE				    |vimtrello-usage|
-
-==============================================================================
- 1. INTRODUCTION			*vimtrello-introduction*
-
-*VimTrello.vim* is a Vim plugin for Trello.
-
-Latest version:
-https://github.com/yoshio15/vim-trello
+ 1. INTRODUCTION			|vim_trello-introduction|
+ 2. USAGE				    |vim_trello-usage|
 
 ==============================================================================
- 2. USAGE				    *vimtrello-usage*
+ 1. INTRODUCTION			*vim_trello-introduction*
+
+  *VimTrello.vim* is a Vim plugin for Trello.
+
+  Latest version:
+  https://github.com/yoshio15/vim-trello
+
+==============================================================================
+ 2. USAGE				    *vim_trello-usage*
+
+------------------------------------------------------------------------------
+  VARIABLES                                            *vim_trello-variables*
+
+  g:vimTrelloApiKey                                    *g:vimTrelloApiKey*
+    Trello api key of your account.
+
+  g:vimTrelloToken                                     *g:vimTrelloToken*
+    Trello api token of your account.
+
+------------------------------------------------------------------------------
+  COMMANDS					*vim_trello-commands*
+
+  :VimTrello				*:VimTrello*
+    you can open your boards list of trello assosiaded with your Trello account by this command.
+
+------------------------------------------------------------------------------
+  KEY-MAPPINGS                                         *vim_trello-key-mappings*
+
+  BOARDS-BUFFER                                        *vim_trellio-boards*
+    <CR>                                               *vim_trello-boards-<cr>*
+      show the Board
+
+    q                                                  *vim_trello-boards-q*
+      close buffer
+
+  LISTS-BUFFER                                         *vim_trello-lists*
+    <CR>                                               *vim_trello-lists-<cr>*
+      show the List
+
+    a                                                  *vim_trello-lists-a*
+      add new List
+
+    b                                                  *vim_trello-lists-b
+      back to Boards
+
+    d                                                  *vim_trello-lists-d*
+      delete(archive) the List
+
+    q                                                  *vim_trello-lists-q*
+      close buffer
+
+  TAKS-BUFFER                                          *vim_trello-tasks*
+    <CR>                                               *vim_trello-tasks-<cr>*
+      show the Task
+
+    a                                                  *vim_trello-tasks-a*
+      add new Task
+
+    b                                                  *vim_trello-tasks-b
+      back to Lists
+
+    d                                                  *vim_trello-tasks-d*
+      delete(archive) the Task
+
+    e                                                  *vim_trello-tasks-e
+      edit the title of Task
+
+    q                                                  *vim_trello-tasks-q*
+      close buffer
+
+  TASK-DETAIL-BUFFER                                   *vim_trello-task-detail*
+    b                                                  *vim_trello-task-detail-b
+      back to Tasks
+
+    q                                                  *vim_trello-tasks-detail-q*
+      close buffer
