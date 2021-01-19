@@ -6,6 +6,7 @@ function! s:test()
   let v:errors = []
 
   call g:test#common_test#TestCommon()
+  call g:test#command_test#TestCommand()
 
   call s:checkTestResult()
 endfunction
