@@ -31,6 +31,21 @@ function! s:test()
   call assert_equal("test_name", l:actual_dict["test_id"])
   call assert_equal("test_name2", l:actual_dict["test_id2"])
 
+  " case3
+  let l:dict = {
+    \ "id": "test_id",
+    \ "name": "test_name",
+    \ "desc": "hoge"
+    \ }
+  let actual_response = g:common#GetDescFromRes(l:dict)
+  call assert_equal("hoge", l:actual_response)
+
+  let l:dict2 = {
+    \ "dummy": "fuga"
+    \ }
+  let actual_response = g:common#GetDescFromRes(l:dict2)
+  call assert_equal("", l:actual_response)
+
   call s:checkTestResult()
 endfunction
 
