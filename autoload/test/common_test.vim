@@ -1,19 +1,27 @@
-" ====================================
-" execute `:so %` to start test-suite
-" ====================================
-function! s:test()
-  " initialize v:error
-  let v:errors = []
+function! g:test#common_test#TestCommon()
+  call s:TestGetTitleFromLine()
+  call s:TestGetIdFromLine()
+  call s:TestGetIdAndNameDictFromResList()
+  call s:TestGetDescFromRes()
+endfunction
 
-  " case1
+
+" CASE 1
+function! s:TestGetIdFromLine()
   let l:test_line = "title(id)"
   let l:actual_id = g:common#GetIdFromLine(l:test_line)
-  let l:actual_title = g:common#GetTitleFromLine(l:test_line)
-
   call assert_equal("id", l:actual_id)
-  call assert_equal("title", l:actual_title)
+endfunction
 
-  " case2
+" CASE 2
+function! s:TestGetTitleFromLine()
+  let l:test_line = "title(id)"
+  let l:actual_title = g:common#GetTitleFromLine(l:test_line)
+  call assert_equal("title", l:actual_title)
+endfunction
+
+" CASE 3
+function! s:TestGetIdAndNameDictFromResList()
   let l:test_dict = {
     \ "id": "test_id",
     \ "name": "test_name",
@@ -30,8 +38,11 @@ function! s:test()
 
   call assert_equal("test_name", l:actual_dict["test_id"])
   call assert_equal("test_name2", l:actual_dict["test_id2"])
+endfunction
 
-  " case3
+" CASE 4
+function! s:TestGetDescFromRes()
+  " with 'desc' key
   let l:dict = {
     \ "id": "test_id",
     \ "name": "test_name",
@@ -40,23 +51,10 @@ function! s:test()
   let actual_response = g:common#GetDescFromRes(l:dict)
   call assert_equal("hoge", l:actual_response)
 
+  " without 'desc' key
   let l:dict2 = {
     \ "dummy": "fuga"
     \ }
   let actual_response = g:common#GetDescFromRes(l:dict2)
   call assert_equal("", l:actual_response)
-
-  call s:checkTestResult()
 endfunction
-
-function! s:checkTestResult()
-  if len(v:errors) >= 1
-    for err in v:errors
-      echomsg err
-    endfor
-  else
-    echomsg "all tests are passed."
-  endif
-endfunction
-
-call s:test()
