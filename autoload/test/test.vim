@@ -7,6 +7,7 @@ function! s:test()
 
   call g:test#common_test#TestCommon()
   call g:test#command_test#TestCommand()
+  call g:test#curl_test#TestCurl()
 
   call s:checkTestResult()
 endfunction
