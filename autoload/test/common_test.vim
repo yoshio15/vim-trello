@@ -3,6 +3,7 @@ function! g:test#common_test#TestCommon()
   call s:TestGetIdFromLine()
   call s:TestGetIdAndNameDictFromResList()
   call s:TestGetDescFromRes()
+  call s:TestGetBoardDictListFromResList()
 endfunction
 
 
@@ -57,4 +58,20 @@ function! s:TestGetDescFromRes()
     \ }
   let actual_response = g:common#GetDescFromRes(l:dict2)
   call assert_equal("", l:actual_response)
+endfunction
+
+" CASE 5
+function! s:TestGetBoardDictListFromResList()
+  let l:responseList = [
+        \ { "id" : "test-id1", "name": "test-name1" },
+        \ { "id" : "test-id2", "name": "test-name2" },
+        \ { "id" : "test-id3", "name": "test-name3" }
+        \ ]
+  let l:expected = [
+        \ { "id": 1, "boardId" : "test-id1", "name": "test-name1" },
+        \ { "id": 2, "boardId" : "test-id2", "name": "test-name2" },
+        \ { "id": 3, "boardId" : "test-id3", "name": "test-name3" }
+        \ ]
+  let l:actual = g:common#GetBoardDictListFromResList(responseList)
+  call assert_equal(l:expected, l:actual)
 endfunction

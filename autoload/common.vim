@@ -29,6 +29,21 @@ function! g:common#GetIdAndNameDictFromResList(responseList)
   return l:dict
 endfunction
 
+function! g:common#GetBoardDictListFromResList(responseList)
+  let l:boardDictList = []
+  let l:id = 1
+  for response in a:responseList
+    let l:boardDict = {
+          \ "id": id,
+          \ "boardId" : response['id'],
+          \ "name": response['name']
+          \ }
+    let l:id += 1
+    call add(l:boardDictList, l:boardDict)
+  endfor
+  return l:boardDictList
+endfunction
+
 function! g:common#GetDescFromRes(response)
   let l:desc = 'desc'
   if has_key(a:response, l:desc)
