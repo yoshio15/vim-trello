@@ -1,7 +1,7 @@
 " =================================
 " Board
 " =================================
-function! g:board#OpenBoardsNewBuffer(boardDict, boardDictList)
+function! g:board#OpenBoardsNewBuffer(boardDict)
 
   let l:boards_buffer = 'BOARDS'
   call g:common#OpenNewBuf(l:boards_buffer)
@@ -17,15 +17,11 @@ function! g:board#OpenBoardsNewBuffer(boardDict, boardDictList)
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show Board'
 
-
-  " call g:common#WriteDictListToBuf(a:boardDictList)
-
-  call g:common#WriteDictToBuf(a:boardDict)
-  call append(0, '" select Board below.')
-  call append(0, '')
-  call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
+  call append(line("$"), '')
+  call append(line("$"), '" select Board below.')
+  call g:common#WriteDictListToBuf(g:boardDictList)
 
 endfunction
 
@@ -37,7 +33,8 @@ function! GetLists(boardName)
     return
   endif
 
-  let l:boardId = g:common#GetIdFromLine(a:boardName)
+  " let l:boardId = g:common#GetIdFromLine(a:boardName)
+  let l:boardId = g:common#GetIdFromDictList(g:boardDictList, a:boardName[0])
   call GetListsByBoardId(l:boardId)
 
 endfunction

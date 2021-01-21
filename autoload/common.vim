@@ -17,6 +17,18 @@ function! g:common#GetIdFromLine(line)
   return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
 
+function! g:common#GetIdFromDictList(dictList, id)
+  for item in a:dictList
+    if !has_key(item, "id") || !has_key(item, "boardId")
+      continue
+    endif
+    if item.id == a:id
+      return item.boardId
+    endif
+  endfor
+  return ""
+endfunction
+
 function! g:common#GetTitleFromLine(line)
   return a:line[0 : stridx(a:line,'(') - 1]
 endfunction

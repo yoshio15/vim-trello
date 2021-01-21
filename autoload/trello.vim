@@ -1,6 +1,10 @@
 " =================================
 " 【Main】vim-trello
 " =================================
+let g:boardDictList = []
+let g:listDictList = []
+let g:taskDictList = []
+
 function! g:trello#VimTrello()
 
   try
@@ -20,9 +24,9 @@ function! g:trello#VimTrello()
   endtry
 
   let l:boardDict = g:common#GetIdAndNameDictFromResList(l:result)
-  let l:boardDictList = g:common#GetBoardDictListFromResList(l:result)
+  let g:boardDictList = g:common#GetBoardDictListFromResList(l:result)
 
-  call g:board#OpenBoardsNewBuffer(l:boardDict, l:boardDictList)
+  call g:board#OpenBoardsNewBuffer(l:boardDict)
 
 endfunction
 
