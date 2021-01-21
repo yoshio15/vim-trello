@@ -7,21 +7,18 @@ function! g:test#common_test#TestCommon()
 endfunction
 
 
-" CASE 1
 function! s:TestGetIdFromLine()
   let l:test_line = "title(id)"
   let l:actual_id = g:common#GetIdFromLine(l:test_line)
   call assert_equal("id", l:actual_id)
 endfunction
 
-" CASE 2
 function! s:TestGetTitleFromLine()
   let l:test_line = "title(id)"
   let l:actual_title = g:common#GetTitleFromLine(l:test_line)
   call assert_equal("title", l:actual_title)
 endfunction
 
-" CASE 3
 function! s:TestGetIdAndNameDictFromResList()
   let l:test_dict = {
     \ "id": "test_id",
@@ -41,7 +38,6 @@ function! s:TestGetIdAndNameDictFromResList()
   call assert_equal("test_name2", l:actual_dict["test_id2"])
 endfunction
 
-" CASE 4
 function! s:TestGetDescFromRes()
   " with 'desc' key
   let l:dict = {
@@ -60,7 +56,6 @@ function! s:TestGetDescFromRes()
   call assert_equal("", l:actual_response)
 endfunction
 
-" CASE 5
 function! s:TestGetBoardDictListFromResList()
   let l:responseList = [
         \ { "id" : "test-id1", "name": "test-name1" },
