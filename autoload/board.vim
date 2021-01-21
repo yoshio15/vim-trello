@@ -22,6 +22,7 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
   call append(line("$"), '')
   call append(line("$"), '" select Board below.')
   call g:common#WriteDictListToBuf(g:boardDictList)
+  setlocal nomodifiable
 
 endfunction
 

@@ -34,6 +34,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, l:desc_d_key)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
+  setlocal nomodifiable
 
 endfunction
 
