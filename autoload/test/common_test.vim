@@ -4,6 +4,7 @@ function! g:test#common_test#TestCommon()
   call s:TestGetIdAndNameDictFromResList()
   call s:TestGetDescFromRes()
   call s:TestGetBoardDictListFromResList()
+  call s:TestGetIdFromDictList()
 endfunction
 
 
@@ -69,4 +70,20 @@ function! s:TestGetBoardDictListFromResList()
         \ ]
   let l:actual = g:common#GetBoardDictListFromResList(responseList)
   call assert_equal(l:expected, l:actual)
+endfunction
+
+function! s:TestGetIdFromDictList()
+  let l:dictList = [
+        \ { "id": 1, "boardId" : "test-id1", "name": "test-name1" },
+        \ { "id": 2, "boardId" : "test-id2", "name": "test-name2" },
+        \ { "id": 3, "boardId" : "test-id3", "name": "test-name3" }
+        \ ]
+  let l:actual1 = g:common#GetIdFromDictList(l:dictList, 1)
+  let l:actual2 = g:common#GetIdFromDictList(l:dictList, 2)
+  let l:actual3 = g:common#GetIdFromDictList(l:dictList, 3)
+  let l:actual4 = g:common#GetIdFromDictList(l:dictList, 4)
+  call assert_equal("test-id1", l:actual1)
+  call assert_equal("test-id2", l:actual2)
+  call assert_equal("test-id3", l:actual3)
+  call assert_equal("", l:actual4)
 endfunction
