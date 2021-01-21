@@ -20,7 +20,9 @@ function! g:trello#VimTrello()
   endtry
 
   let l:boardDict = g:common#GetIdAndNameDictFromResList(l:result)
-  call g:board#OpenBoardsNewBuffer(l:boardDict)
+  let l:boardDictList = g:common#GetBoardDictListFromResList(l:result)
+
+  call g:board#OpenBoardsNewBuffer(l:boardDict, l:boardDictList)
 
 endfunction
 

@@ -61,6 +61,18 @@ function! g:common#WriteDictToBuf(dict)
   call append(0, '----------------------------')
 endfunction
 
+function! g:common#WriteDictListToBuf(dictList)
+  call append(line("$"), '----------------------------')
+  for item in a:dictList
+    if !has_key(item, "id") || !has_key(item, "name")
+      continue
+    endif
+    let l:row = printf("%d\. %s", item["id"], item["name"])
+    call append(line("$"), l:row)
+  endfor
+  call append(line("$"), '----------------------------')
+endfunction
+
 function! g:common#AddPostParams(url, idList, name)
   let l:absolute_url = a:url
   if a:idList == ""

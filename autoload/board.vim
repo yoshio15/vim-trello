@@ -1,7 +1,7 @@
 " =================================
 " Board
 " =================================
-function! g:board#OpenBoardsNewBuffer(boardDict)
+function! g:board#OpenBoardsNewBuffer(boardDict, boardDictList)
 
   let l:boards_buffer = 'BOARDS'
   call g:common#OpenNewBuf(l:boards_buffer)
@@ -16,6 +16,9 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
   let l:desc_d_key = '(d)elete a Board'
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show Board'
+
+
+  " call g:common#WriteDictListToBuf(a:boardDictList)
 
   call g:common#WriteDictToBuf(a:boardDict)
   call append(0, '" select Board below.')
