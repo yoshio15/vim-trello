@@ -49,6 +49,7 @@ function! GetListsByBoardId(boardId)
     return
   endtry
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  let g:listDictList = g:common#GetBoardDictListFromResList(l:result)
   call g:list#OpenListsNewBuffer(l:listDict, a:boardId)
 endfunction
 

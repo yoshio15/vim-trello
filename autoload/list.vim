@@ -25,15 +25,14 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show Tasks'
 
-  call g:common#WriteDictToBuf(a:listDict)
-  call append(0, '" select List below.')
-  call append(0, '')
-  call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
   call append(0, l:desc_d_key)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
+  call append(line("$"), '')
+  call append(line("$"), '" select List below.')
+  call g:common#WriteDictListToBuf(g:listDictList)
   setlocal nomodifiable
 
 endfunction
@@ -69,7 +68,8 @@ function! GetCards(listName, boardId)
   if a:listName == ""
     return
   endif
-  let l:listId = g:common#GetIdFromLine(a:listName)
+  " let l:listId = g:common#GetIdFromLine(a:listName)
+  let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
   call GetCardsById(l:listId, a:boardId)
 endfunction
 
