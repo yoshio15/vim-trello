@@ -28,16 +28,15 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show detail of Task'
 
-  call g:common#WriteDictToBuf(a:listDict)
-  call append(0, '" Tasks')
-  call append(0, '')
-  call append(0, '')
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
   call append(0, l:desc_e_key)
   call append(0, l:desc_d_key)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
+  call append(line("$"), '')
+  call append(line("$"), '" Tasks')
+  call g:common#WriteDictListToBuf(g:taskDictList)
   setlocal nomodifiable
 
 endfunction
@@ -82,7 +81,8 @@ function! GetSingleCard(cardName, listId, boardId)
     return
   endif
 
-  let l:cardId = g:common#GetIdFromLine(a:cardName)
+  " let l:cardId = g:common#GetIdFromLine(a:cardName)
+  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
   let l:cmd = g:command#GetSingleCardCmd(l:cardId)
 
   try

@@ -83,5 +83,7 @@ function! GetCardsById(listId, boardId)
     return
   endtry
   let l:listDict = g:common#GetIdAndNameDictFromResList(l:result)
+  let g:taskDictList = g:common#GetBoardDictListFromResList(l:result)
+
   call g:task#OpenCardsNewBuffer(l:listDict, a:listId, a:boardId)
 endfunction
