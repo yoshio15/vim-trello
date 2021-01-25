@@ -15,9 +15,13 @@ function! s:TestGetIdFromLine()
 endfunction
 
 function! s:TestGetTitleFromLine()
-  let l:test_line = "title(id)"
-  let l:actual_title = g:common#GetTitleFromLine(l:test_line)
-  call assert_equal("title", l:actual_title)
+  let l:test_line1 = "1. title"
+  let l:actual_title1 = g:common#GetTitleFromLine(l:test_line1)
+  call assert_equal("title", l:actual_title1)
+
+  let l:test_line2 = "10. title..."
+  let l:actual_title2 = g:common#GetTitleFromLine(l:test_line2)
+  call assert_equal("title...", l:actual_title2)
 endfunction
 
 function! s:TestGetIdAndNameDictFromResList()

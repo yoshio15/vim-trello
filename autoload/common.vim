@@ -30,7 +30,7 @@ function! g:common#GetIdFromDictList(dictList, id)
 endfunction
 
 function! g:common#GetTitleFromLine(line)
-  return a:line[0 : stridx(a:line,'(') - 1]
+  return a:line[stridx(a:line, ' ') + 1 : strlen(a:line)]
 endfunction
 
 function! g:common#GetIdAndNameDictFromResList(responseList)
