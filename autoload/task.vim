@@ -67,7 +67,7 @@ function! DeleteCard(cardName, listId, boardId)
     return
   endif
 
-  let l:cardId = g:common#GetIdFromLine(a:cardName)
+  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
   let l:cmd = g:command#DeleteCardCmd(l:cardId)
   call system(l:cmd)
   call GetCardsById(a:listId, a:boardId)
