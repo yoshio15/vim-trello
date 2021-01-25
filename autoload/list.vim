@@ -68,7 +68,6 @@ function! GetCards(listName, boardId)
   if a:listName == ""
     return
   endif
-  " let l:listId = g:common#GetIdFromLine(a:listName)
   let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
   call GetCardsById(l:listId, a:boardId)
 endfunction

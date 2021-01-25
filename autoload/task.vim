@@ -81,7 +81,6 @@ function! GetSingleCard(cardName, listId, boardId)
     return
   endif
 
-  " let l:cardId = g:common#GetIdFromLine(a:cardName)
   let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
   let l:cmd = g:command#GetSingleCardCmd(l:cardId)
 

@@ -34,7 +34,6 @@ function! GetLists(boardName)
     return
   endif
 
-  " let l:boardId = g:common#GetIdFromLine(a:boardName)
   let l:boardId = g:common#GetIdFromDictList(g:boardDictList, a:boardName[0])
   call GetListsByBoardId(l:boardId)
 
