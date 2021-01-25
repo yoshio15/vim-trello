@@ -77,9 +77,12 @@ endfunction
 " get single card
 function! GetSingleCard(cardName, listId, boardId)
 
-  if a:cardName == ""
+  try
+    call s:CheckSelectedLine(a:cardName[0])
+  catch
+    echomsg v:exception
     return
-  endif
+  endtry
 
   let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
   let l:cmd = g:command#GetSingleCardCmd(l:cardId)
@@ -100,6 +103,18 @@ function! GetSingleCard(cardName, listId, boardId)
 
 endfunction
 
+function! s:CheckSelectedLine(char)
+  let l:err_msg = "cannot select here."
+  if a:char == ""
+    throw l:err_msg
+  endif
+  for task in g:taskDictList
+    if a:char == task.id
+      return
+    endif
+  endfor
+  throw l:err_msg
+endfunction
 
 function! EditCardTitle(cardName, listId, boardId)
 

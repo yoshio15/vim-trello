@@ -65,13 +65,28 @@ endfunction
 
 " get Cards from Lists
 function! GetCards(listName, boardId)
-  if a:listName == ""
+  try
+    call s:CheckSelectedLine(a:listName[0])
+  catch
+    echomsg v:exception
     return
-  endif
+  endtry
   let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
   call GetCardsById(l:listId, a:boardId)
 endfunction
 
+function! s:CheckSelectedLine(char)
+  let l:err_msg = "cannot select here."
+  if a:char == ""
+    throw l:err_msg
+  endif
+  for _list in g:listDictList
+    if a:char == _list.id
+      return
+    endif
+  endfor
+  throw l:err_msg
+endfunction
 
 function! GetCardsById(listId, boardId)
   let l:cmd = g:command#GetCardsCmd(a:listId)

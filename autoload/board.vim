@@ -30,13 +30,29 @@ endfunction
 " get Boards from Lists
 function! GetLists(boardName)
 
-  if a:boardName == ""
+  try
+    call s:CheckSelectedLine(a:boardName[0])
+  catch
+    echomsg v:exception
     return
-  endif
+  endtry
 
   let l:boardId = g:common#GetIdFromDictList(g:boardDictList, a:boardName[0])
   call GetListsByBoardId(l:boardId)
 
+endfunction
+
+function! s:CheckSelectedLine(char)
+  let l:err_msg = "cannot select here."
+  if a:char == ""
+    throw l:err_msg
+  endif
+  for board in g:boardDictList
+    if a:char == board.id
+      return
+    endif
+  endfor
+  throw l:err_msg
 endfunction
 
 function! GetListsByBoardId(boardId)
