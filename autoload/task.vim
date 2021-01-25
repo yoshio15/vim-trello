@@ -122,7 +122,7 @@ function! EditCardTitle(cardName, listId, boardId)
     return
   endif
 
-  let l:cardId = g:common#GetIdFromLine(a:cardName)
+  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
   let l:cardTitle = g:common#GetTitleFromLine(a:cardName)
 
   call inputsave()
