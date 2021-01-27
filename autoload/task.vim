@@ -35,7 +35,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
   call append(line("$"), '')
-  call append(line("$"), '" Tasks')
+  call append(line("$"), 'Tasks')
   call g:common#WriteDictListToBuf(g:taskDictList)
   setlocal nomodifiable
 

@@ -31,7 +31,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
   call append(line("$"), '')
-  call append(line("$"), '" select List below.')
+  call append(line("$"), 'select List below.')
   call g:common#WriteDictListToBuf(g:listDictList)
   setlocal nomodifiable
 
