@@ -62,16 +62,26 @@ endfunction
 
 " delete card
 function! DeleteCard(cardName, listId, boardId)
-
-  if a:cardName == ""
+  let l:lineId = trim(getline("."))[0]
+  try
+    call s:CheckSelectedLine(l:lineId)
+  catch
+    echomsg v:exception
     return
+  endtry
+
+  call inputsave()
+  let l:userInput=input(printf("Are you sure to delete the task:\n%s(yN): ", a:cardName))
+  call inputrestore()
+
+  if l:userInput ==? "y"
+    let l:cardId = g:common#GetIdFromDictList(g:taskDictList, l:lineId)
+    let l:cmd = g:command#DeleteCardCmd(l:cardId)
+    call system(l:cmd)
+    call GetCardsById(a:listId, a:boardId)
+  else
+    echomsg "not deleted task."
   endif
-
-  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
-  let l:cmd = g:command#DeleteCardCmd(l:cardId)
-  call system(l:cmd)
-  call GetCardsById(a:listId, a:boardId)
-
 endfunction
 
 " get single card
