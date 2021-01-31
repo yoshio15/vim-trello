@@ -8,12 +8,12 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
 
   set buftype=nofile
   nnoremap <silent> <buffer> <Plug>(close-boards) :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call GetLists(trim(getline('.')))<CR>
+  nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call GetLists()<CR>
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
 
-  let l:desc_a_key = '(a)dd new Board'
-  let l:desc_d_key = '(d)elete a Board'
+  " let l:desc_a_key = '(a)dd new Board'
+  " let l:desc_d_key = '(d)elete a Board'
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show Board'
 
@@ -28,18 +28,17 @@ endfunction
 
 
 " get Boards from Lists
-function! GetLists(boardName)
-
+function! GetLists()
+  let l:lineId = trim(getline('.'))[0]
   try
-    call s:CheckSelectedLine(a:boardName[0])
+    call s:CheckSelectedLine(l:lineId)
   catch
     echomsg v:exception
     return
   endtry
 
-  let l:boardId = g:common#GetIdFromDictList(g:boardDictList, a:boardName[0])
+  let l:boardId = g:common#GetIdFromDictList(g:boardDictList, l:lineId)
   call GetListsByBoardId(l:boardId)
-
 endfunction
 
 function! s:CheckSelectedLine(char)
