@@ -54,16 +54,20 @@ function! AddNewList(boardId, title)
 endfunction
 
 function! DeleteList(listName, boardId)
-  if a:listName == ""
+  let l:lineId = trim(getline("."))[0]
+  try
+    call s:CheckSelectedLine(l:lineId)
+  catch
+    echomsg v:exception
     return
-  endif
+  endtry
 
   call inputsave()
-  let l:userInput=input(printf("Are you sure to delete the list:\n%s(y/N)", a:listName))
+  let l:userInput=input(printf("Are you sure to delete the list:\n%s(yN): ", a:listName))
   call inputrestore()
 
   if l:userInput ==? "y"
-    let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
+    let l:listId = g:common#GetIdFromDictList(g:listDictList, l:lineId)
     let l:cmd = g:command#DeleteListCmd(l:listId)
     call system(l:cmd)
     call GetListsByBoardId(a:boardId)
