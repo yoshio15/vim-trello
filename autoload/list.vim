@@ -12,7 +12,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
-  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards(trim(getline(".")), "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards("' . a:boardId . '")<CR>'
   nmap <buffer> a <Plug>(add-list)
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> d <Plug>(delete-list)
@@ -64,14 +64,15 @@ function! DeleteList(listName, boardId)
 endfunction
 
 " get Cards from Lists
-function! GetCards(listName, boardId)
+function! GetCards(boardId)
+  let l:lineId = trim(getline("."))[0]
   try
-    call s:CheckSelectedLine(a:listName[0])
+    call s:CheckSelectedLine(l:lineId)
   catch
     echomsg v:exception
     return
   endtry
-  let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
+  let l:listId = g:common#GetIdFromDictList(g:listDictList, l:lineId)
   call GetCardsById(l:listId, a:boardId)
 endfunction
 
