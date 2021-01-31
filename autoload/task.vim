@@ -48,6 +48,10 @@ function! OpenAddNewTaskArea(listId, boardId)
   let l:userInput=input("Enter title of card which you want to add.\nTask name: ")
   call inputrestore()
 
+  if trim(l:userInput) == ''
+    return
+  endif
+
   call AddNewCard(a:listId, UrlEncode(l:userInput))
   call GetCardsById(a:listId, a:boardId)
 endfunction

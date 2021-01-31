@@ -43,6 +43,10 @@ function! OpenAddNewListArea(boardId)
   let l:userInput=input("Enter title of List which you want to add.\nnew List name: ")
   call inputrestore()
 
+  if trim(l:userInput) == ''
+    return
+  endif
+
   call AddNewList(a:boardId, UrlEncode(l:userInput))
   call GetListsByBoardId(a:boardId)
 endfunction
