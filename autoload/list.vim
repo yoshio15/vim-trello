@@ -57,10 +57,19 @@ function! DeleteList(listName, boardId)
   if a:listName == ""
     return
   endif
-  let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
-  let l:cmd = g:command#DeleteListCmd(l:listId)
-  call system(l:cmd)
-  call GetListsByBoardId(a:boardId)
+
+  call inputsave()
+  let l:userInput=input(printf("Are you sure to delete the list:\n%s(y/N)", a:listName))
+  call inputrestore()
+
+  if l:userInput ==? "y"
+    let l:listId = g:common#GetIdFromDictList(g:listDictList, a:listName[0])
+    let l:cmd = g:command#DeleteListCmd(l:listId)
+    call system(l:cmd)
+    call GetListsByBoardId(a:boardId)
+  else
+    echomsg "not deleted list."
+  endif
 endfunction
 
 " get Cards from Lists
