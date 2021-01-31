@@ -1,6 +1,8 @@
 " =================================
 " 【Common functions】
 " =================================
+let s:buffer_with = 50
+
 function! g:common#CheckEnv()
   if !executable('curl')
     throw "curl is not available"
@@ -74,7 +76,7 @@ function! g:common#WriteDictToBuf(dict)
 endfunction
 
 function! g:common#WriteDictListToBuf(dictList)
-  call append(line("$"), '----------------------------')
+  call append(line("$"), s:GetLineOfBufWidth())
   for item in a:dictList
     if !has_key(item, "id") || !has_key(item, "name")
       continue
@@ -82,7 +84,7 @@ function! g:common#WriteDictListToBuf(dictList)
     let l:row = printf("%d\. %s", item["id"], item["name"])
     call append(line("$"), l:row)
   endfor
-  call append(line("$"), '----------------------------')
+  call append(line("$"), s:GetLineOfBufWidth())
 endfunction
 
 function! g:common#AddPostParams(url, idList, name)
@@ -95,6 +97,15 @@ function! g:common#AddPostParams(url, idList, name)
   endif
   let l:absolute_url = l:absolute_url . "&idList=" . a:idList
   return l:absolute_url
+endfunction
+
+function! s:GetLineOfBufWidth()
+  let l:line_char = "-"
+  let l:char_list = []
+  for el in range(s:buffer_with - 4)
+    call add(l:char_list, l:line_char)
+  endfor
+  return join(l:char_list, '')
 endfunction
 
 " URL encode a string. ie. Percent-encode characters as necessary.
@@ -143,5 +154,5 @@ function! g:common#CloseBuf()
 endfunction
 
 function! g:common#OpenNewBuf(bufName)
-  execute 50 'vnew' a:bufName
+  execute s:buffer_with 'vnew' a:bufName
 endfunction
