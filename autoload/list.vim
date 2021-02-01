@@ -24,6 +24,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   let l:desc_d_key = '(d)elete a List'
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show Tasks'
+  let l:board_name = g:common#GetNameByIdFromList(a:boardId, g:boardDictList)
 
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
@@ -31,7 +32,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
   call append(line("$"), '')
-  call append(line("$"), 'select List below.')
+  call append(line("$"), printf('Board: %s', l:board_name))
   call g:common#WriteDictListToBuf(g:listDictList)
 
   call cursor(10, 1)

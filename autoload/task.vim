@@ -27,6 +27,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   let l:desc_e_key = '(e)dit the title of Task'
   let l:desc_q_key = '(q) close buffer'
   let l:desc_enter_key = '(Enter) show detail of Task'
+  let l:list_name = g:common#GetNameByIdFromList(a:listId, g:listDictList)
 
   call append(0, l:desc_enter_key)
   call append(0, l:desc_q_key)
@@ -35,7 +36,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   call append(0, l:desc_b_key)
   call append(0, l:desc_a_key)
   call append(line("$"), '')
-  call append(line("$"), 'Tasks')
+  call append(line("$"), printf('List: %s', l:list_name))
   call g:common#WriteDictListToBuf(g:taskDictList)
 
   call cursor(11, 1)

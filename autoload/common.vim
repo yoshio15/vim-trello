@@ -66,6 +66,14 @@ function! g:common#GetDescFromRes(response)
   return ''
 endfunction
 
+function! g:common#GetNameByIdFromList(id, list)
+  for board in a:list
+    if board['boardId'] == a:id
+      return board['name']
+    endif
+  endfor
+endfunction
+
 function! g:common#WriteDictToBuf(dict)
   call append(0, '----------------------------')
   for key in keys(a:dict)
