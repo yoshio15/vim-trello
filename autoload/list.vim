@@ -33,6 +33,8 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call append(line("$"), '')
   call append(line("$"), 'select List below.')
   call g:common#WriteDictListToBuf(g:listDictList)
+
+  call cursor(10, 1)
   setlocal nomodifiable
 
 endfunction

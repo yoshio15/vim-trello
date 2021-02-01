@@ -37,6 +37,8 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   call append(line("$"), '')
   call append(line("$"), 'Tasks')
   call g:common#WriteDictListToBuf(g:taskDictList)
+
+  call cursor(11, 1)
   setlocal nomodifiable
 
 endfunction
