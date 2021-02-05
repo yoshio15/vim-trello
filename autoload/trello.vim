@@ -14,19 +14,19 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let l:cmd = g:command#GetBoardsCmd()
+  let cmd = g:command#GetBoardsCmd()
 
   try
-    let l:result = json_decode(system(cmd))
+    let result = json_decode(system(cmd))
   catch
     echomsg v:exception
     return
   endtry
 
-  let l:boardDict = g:common#GetIdAndNameDictFromResList(l:result)
-  let g:boardDictList = g:common#GetBoardDictListFromResList(l:result)
+  let boardDict = g:common#GetIdAndNameDictFromResList(result)
+  let g:boardDictList = g:common#GetBoardDictListFromResList(result)
 
-  call g:board#OpenBoardsNewBuffer(l:boardDict)
+  call g:board#OpenBoardsNewBuffer(boardDict)
 
 endfunction
 

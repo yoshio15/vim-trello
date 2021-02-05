@@ -2,53 +2,53 @@
 " commands
 " =================================
 function! g:command#GetBoardsCmd()
-  let l:path = "/1/members/me/boards"
-  let l:url = s:BuildTrelloApiUrl(l:path)
-  return  g:curl#CurlGetCmd(l:url)
+  let path = "/1/members/me/boards"
+  let url = s:BuildTrelloApiUrl(path)
+  return  g:curl#CurlGetCmd(url)
 endfunction
 
 function! g:command#GetListsCmd(boardId)
-  let l:path = printf("/1/boards/%s/lists", a:boardId)
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  let path = printf("/1/boards/%s/lists", a:boardId)
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(path))
 endfunction
 
 function! g:command#GetCardsCmd(listId)
-  let l:path = printf("/1/lists/%s/cards", a:listId)
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  let path = printf("/1/lists/%s/cards", a:listId)
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(path))
 endfunction
 
 function! g:command#AddNewListCmd(boardId, title)
-  let l:path = "/1/lists"
-  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&idBoard=' . a:boardId . '&name=' . a:title
-  return  g:curl#CurlPostCmd(l:absolute_url)
+  let path = "/1/lists"
+  let absolute_url = s:BuildTrelloApiUrl(path) . '&idBoard=' . a:boardId . '&name=' . a:title
+  return  g:curl#CurlPostCmd(absolute_url)
 endfunction
 
 function! g:command#DeleteListCmd(listId)
-  let l:path = printf("/1/lists/%s/closed", a:listId)
-  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&value=true'
-  return  g:curl#CurlPutCmd(l:absolute_url)
+  let path = printf("/1/lists/%s/closed", a:listId)
+  let absolute_url = s:BuildTrelloApiUrl(path) . '&value=true'
+  return  g:curl#CurlPutCmd(absolute_url)
 endfunction
 
 function! g:command#GetSingleCardCmd(cardId)
-  let l:path = printf("/1/cards/%s", a:cardId)
-  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(l:path))
+  let path = printf("/1/cards/%s", a:cardId)
+  return  g:curl#CurlGetCmd(s:BuildTrelloApiUrl(path))
 endfunction
 
 function! g:command#UpdateCardTitleCmd(cardId, title)
-  let l:path = printf("/1/cards/%s", a:cardId)
-  let l:absolute_url = s:BuildTrelloApiUrl(l:path) . '&name=' . a:title
-  return  g:curl#CurlPutCmd(l:absolute_url)
+  let path = printf("/1/cards/%s", a:cardId)
+  let absolute_url = s:BuildTrelloApiUrl(path) . '&name=' . a:title
+  return  g:curl#CurlPutCmd(absolute_url)
 endfunction
 
 function! g:command#AddNewCardCmd(listId, title)
-  let l:path = "/1/cards"
-  let l:absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(l:path), a:listId, a:title)
-  return  g:curl#CurlPostCmd(l:absolute_url)
+  let path = "/1/cards"
+  let absolute_url = g:common#AddPostParams(s:BuildTrelloApiUrl(path), a:listId, a:title)
+  return  g:curl#CurlPostCmd(absolute_url)
 endfunction
 
 function! g:command#DeleteCardCmd(cardId)
-  let l:path = printf("/1/cards/%s", a:cardId)
-  return  g:curl#CurlDeleteCmd(s:BuildTrelloApiUrl(l:path))
+  let path = printf("/1/cards/%s", a:cardId)
+  return  g:curl#CurlDeleteCmd(s:BuildTrelloApiUrl(path))
 endfunction
 
 function! s:BuildTrelloApiUrl(path)

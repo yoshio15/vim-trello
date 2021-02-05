@@ -36,32 +36,32 @@ function! g:common#GetTitleFromLine(line)
 endfunction
 
 function! g:common#GetIdAndNameDictFromResList(responseList)
-  let l:dict = {}
+  let dict = {}
   for response in a:responseList
-    let l:dict[response['id']] = response['name']
+    let dict[response['id']] = response['name']
   endfor
-  return l:dict
+  return dict
 endfunction
 
 function! g:common#GetBoardDictListFromResList(responseList)
-  let l:boardDictList = []
-  let l:id = 1
+  let boardDictList = []
+  let id = 1
   for response in a:responseList
-    let l:boardDict = {
+    let boardDict = {
           \ "id": id,
           \ "boardId" : response['id'],
           \ "name": response['name']
           \ }
-    let l:id += 1
-    call add(l:boardDictList, l:boardDict)
+    let id += 1
+    call add(boardDictList, boardDict)
   endfor
-  return l:boardDictList
+  return boardDictList
 endfunction
 
 function! g:common#GetDescFromRes(response)
-  let l:desc = 'desc'
-  if has_key(a:response, l:desc)
-    return a:response[l:desc]
+  let desc = 'desc'
+  if has_key(a:response, desc)
+    return a:response[desc]
   endif
   return ''
 endfunction
@@ -77,8 +77,8 @@ endfunction
 function! g:common#WriteDictToBuf(dict)
   call append(0, '----------------------------')
   for key in keys(a:dict)
-    let l:row = a:dict[key] . "(" . key . ")"
-    call append(line(0), l:row)
+    let row = a:dict[key] . "(" . key . ")"
+    call append(line(0), row)
   endfor
   call append(0, '----------------------------')
 endfunction
@@ -89,31 +89,31 @@ function! g:common#WriteDictListToBuf(dictList)
     if !has_key(item, "id") || !has_key(item, "name")
       continue
     endif
-    let l:row = printf("%d\. %s", item["id"], item["name"])
-    call append(line("$"), l:row)
+    let row = printf("%d\. %s", item["id"], item["name"])
+    call append(line("$"), row)
   endfor
   call append(line("$"), s:GetLineOfBufWidth())
 endfunction
 
 function! g:common#AddPostParams(url, idList, name)
-  let l:absolute_url = a:url
+  let absolute_url = a:url
   if a:idList == ""
     throw  "param 'idList' is required to add new Card"
   endif
   if a:name != ""
-    let l:absolute_url = l:absolute_url .  "&name=" . a:name
+    let absolute_url = absolute_url .  "&name=" . a:name
   endif
-  let l:absolute_url = l:absolute_url . "&idList=" . a:idList
-  return l:absolute_url
+  let absolute_url = absolute_url . "&idList=" . a:idList
+  return absolute_url
 endfunction
 
 function! s:GetLineOfBufWidth()
-  let l:line_char = "-"
-  let l:char_list = []
+  let line_char = "-"
+  let char_list = []
   for el in range(s:buffer_with - 4)
-    call add(l:char_list, l:line_char)
+    call add(char_list, line_char)
   endfor
-  return join(l:char_list, '')
+  return join(char_list, '')
 endfunction
 
 " URL encode a string. ie. Percent-encode characters as necessary.

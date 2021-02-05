@@ -3,9 +3,9 @@
 " =================================
 function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
 
-  let l:cards_buffer = 'CARDS'
+  let cards_buffer = 'CARDS'
   call g:common#CloseBuf()
-  call g:common#OpenNewBuf(l:cards_buffer)
+  call g:common#OpenNewBuf(cards_buffer)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
@@ -21,22 +21,22 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   nmap <buffer> q <Plug>(close-cards)
   nmap <buffer> <CR> <Plug>(open-cards)
 
-  let l:desc_a_key = '(a)dd new Task'
-  let l:desc_b_key = '(b)ack to Lists'
-  let l:desc_d_key = '(d)elete a Task'
-  let l:desc_e_key = '(e)dit the title of Task'
-  let l:desc_q_key = '(q) close buffer'
-  let l:desc_enter_key = '(Enter) show detail of Task'
-  let l:list_name = g:common#GetNameByIdFromList(a:listId, g:listDictList)
+  let desc_a_key = '(a)dd new Task'
+  let desc_b_key = '(b)ack to Lists'
+  let desc_d_key = '(d)elete a Task'
+  let desc_e_key = '(e)dit the title of Task'
+  let desc_q_key = '(q) close buffer'
+  let desc_enter_key = '(Enter) show detail of Task'
+  let list_name = g:common#GetNameByIdFromList(a:listId, g:listDictList)
 
-  call append(0, l:desc_enter_key)
-  call append(0, l:desc_q_key)
-  call append(0, l:desc_e_key)
-  call append(0, l:desc_d_key)
-  call append(0, l:desc_b_key)
-  call append(0, l:desc_a_key)
+  call append(0, desc_enter_key)
+  call append(0, desc_q_key)
+  call append(0, desc_e_key)
+  call append(0, desc_d_key)
+  call append(0, desc_b_key)
+  call append(0, desc_a_key)
   call append(line("$"), '')
-  call append(line("$"), printf('List: %s', l:list_name))
+  call append(line("$"), printf('List: %s', list_name))
   call g:common#WriteDictListToBuf(g:taskDictList)
 
   call cursor(11, 1)
@@ -48,43 +48,43 @@ endfunction
 function! OpenAddNewTaskArea(listId, boardId)
   " accept user input
   call inputsave()
-  let l:userInput=input("Enter title of card which you want to add.\nTask name: ")
+  let userInput=input("Enter title of card which you want to add.\nTask name: ")
   call inputrestore()
 
-  if trim(l:userInput) == ''
+  if trim(userInput) == ''
     return
   endif
 
-  call AddNewCard(a:listId, UrlEncode(l:userInput))
+  call AddNewCard(a:listId, UrlEncode(userInput))
   call GetCardsById(a:listId, a:boardId)
 endfunction
 
 
 " add single card
 function! AddNewCard(listId, title)
-  let l:cmd = g:command#AddNewCardCmd(a:listId, a:title)
-  call system(l:cmd)
+  let cmd = g:command#AddNewCardCmd(a:listId, a:title)
+  call system(cmd)
 endfunction
 
 
 " delete card
 function! DeleteCard(cardName, listId, boardId)
-  let l:lineId = trim(getline("."))[0]
+  let lineId = trim(getline("."))[0]
   try
-    call s:CheckSelectedLine(l:lineId)
+    call s:CheckSelectedLine(lineId)
   catch
     echomsg v:exception
     return
   endtry
 
   call inputsave()
-  let l:userInput=input(printf("Are you sure to delete the task:\n%s(yN): ", a:cardName))
+  let userInput=input(printf("Are you sure to delete the task:\n%s(yN): ", a:cardName))
   call inputrestore()
 
-  if l:userInput ==? "y"
-    let l:cardId = g:common#GetIdFromDictList(g:taskDictList, l:lineId)
-    let l:cmd = g:command#DeleteCardCmd(l:cardId)
-    call system(l:cmd)
+  if userInput ==? "y"
+    let cardId = g:common#GetIdFromDictList(g:taskDictList, lineId)
+    let cmd = g:command#DeleteCardCmd(cardId)
+    call system(cmd)
     call GetCardsById(a:listId, a:boardId)
   else
     echomsg "not deleted task."
@@ -101,36 +101,36 @@ function! GetSingleCard(cardName, listId, boardId)
     return
   endtry
 
-  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
-  let l:cmd = g:command#GetSingleCardCmd(l:cardId)
+  let cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
+  let cmd = g:command#GetSingleCardCmd(cardId)
 
   try
-    let l:result = json_decode(system(cmd))
+    let result = json_decode(system(cmd))
   catch
     echomsg v:exception
     return
   endtry
 
-  let l:desc = g:common#GetDescFromRes(l:result)
-  if l:desc == ""
+  let desc = g:common#GetDescFromRes(result)
+  if desc == ""
     echomsg "no description on this Task"
   endif
 
-  call g:task_detail#OpenSingleCardNewBuffer(l:desc, a:listId, a:boardId)
+  call g:task_detail#OpenSingleCardNewBuffer(desc, a:listId, a:boardId)
 
 endfunction
 
 function! s:CheckSelectedLine(char)
-  let l:err_msg = "cannot select here."
+  let err_msg = "cannot select here."
   if a:char == ""
-    throw l:err_msg
+    throw err_msg
   endif
   for task in g:taskDictList
     if a:char == task.id
       return
     endif
   endfor
-  throw l:err_msg
+  throw err_msg
 endfunction
 
 function! EditCardTitle(cardName, listId, boardId)
@@ -139,16 +139,16 @@ function! EditCardTitle(cardName, listId, boardId)
     return
   endif
 
-  let l:cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
-  let l:cardTitle = g:common#GetTitleFromLine(a:cardName)
+  let cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
+  let cardTitle = g:common#GetTitleFromLine(a:cardName)
 
   call inputsave()
-  let l:userInput = input("Edit title of the card.\nTask name: ", l:cardTitle)
+  let userInput = input("Edit title of the card.\nTask name: ", cardTitle)
   call inputrestore()
 
-  let l:cmd = g:command#UpdateCardTitleCmd(l:cardId, UrlEncode(l:userInput))
+  let cmd = g:command#UpdateCardTitleCmd(cardId, UrlEncode(userInput))
 
-  call system(l:cmd)
+  call system(cmd)
   call GetCardsById(a:listId, a:boardId)
 
 endfunction

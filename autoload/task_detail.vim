@@ -7,9 +7,9 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
     return
   endif
 
-  let l:single_card_buffer = 'CARD'
+  let single_card_buffer = 'CARD'
   call g:common#CloseBuf()
-  call g:common#OpenNewBuf(l:single_card_buffer)
+  call g:common#OpenNewBuf(single_card_buffer)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
@@ -19,16 +19,16 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   " nmap <buffer> e <Plug>(edit-card)
   nmap <buffer> q <Plug>(close-buf)
 
-  let l:desc_b_key = '(b)ack to Cards'
-  let l:desc_q_key = '(q) close buffer'
+  let desc_b_key = '(b)ack to Cards'
+  let desc_q_key = '(q) close buffer'
 
   call setline(1, a:desc)
   call append(0, '----------------------------')
   call append(0, '" description of a Task.')
   call append(0, '')
   call append(0, '')
-  call append(0, l:desc_q_key)
-  call append(0, l:desc_b_key)
+  call append(0, desc_q_key)
+  call append(0, desc_b_key)
 
 endfunction
 

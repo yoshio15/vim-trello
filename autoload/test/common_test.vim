@@ -10,99 +10,99 @@ endfunction
 
 
 function! s:TestGetIdFromLine()
-  let l:test_line = "title(id)"
-  let l:actual_id = g:common#GetIdFromLine(l:test_line)
-  call assert_equal("id", l:actual_id)
+  let test_line = "title(id)"
+  let actual_id = g:common#GetIdFromLine(test_line)
+  call assert_equal("id", actual_id)
 endfunction
 
 function! s:TestGetTitleFromLine()
-  let l:test_line1 = "1. title"
-  let l:actual_title1 = g:common#GetTitleFromLine(l:test_line1)
-  call assert_equal("title", l:actual_title1)
+  let test_line1 = "1. title"
+  let actual_title1 = g:common#GetTitleFromLine(test_line1)
+  call assert_equal("title", actual_title1)
 
-  let l:test_line2 = "10. title..."
-  let l:actual_title2 = g:common#GetTitleFromLine(l:test_line2)
-  call assert_equal("title...", l:actual_title2)
+  let test_line2 = "10. title..."
+  let actual_title2 = g:common#GetTitleFromLine(test_line2)
+  call assert_equal("title...", actual_title2)
 endfunction
 
 function! s:TestGetIdAndNameDictFromResList()
-  let l:test_dict = {
+  let test_dict = {
     \ "id": "test_id",
     \ "name": "test_name",
     \ "dummy": "hoge"
     \ }
-  let l:test_dict2 = {
+  let test_dict2 = {
     \ "id": "test_id2",
     \ "name": "test_name2"
     \ }
-  let l:test_list = []
-  call add(l:test_list, l:test_dict)
-  call add(l:test_list, l:test_dict2)
-  let l:actual_dict = g:common#GetIdAndNameDictFromResList(l:test_list)
+  let test_list = []
+  call add(test_list, test_dict)
+  call add(test_list, test_dict2)
+  let actual_dict = g:common#GetIdAndNameDictFromResList(test_list)
 
-  call assert_equal("test_name", l:actual_dict["test_id"])
-  call assert_equal("test_name2", l:actual_dict["test_id2"])
+  call assert_equal("test_name", actual_dict["test_id"])
+  call assert_equal("test_name2", actual_dict["test_id2"])
 endfunction
 
 function! s:TestGetDescFromRes()
   " with 'desc' key
-  let l:dict = {
+  let dict = {
     \ "id": "test_id",
     \ "name": "test_name",
     \ "desc": "hoge"
     \ }
-  let actual_response = g:common#GetDescFromRes(l:dict)
-  call assert_equal("hoge", l:actual_response)
+  let actual_response = g:common#GetDescFromRes(dict)
+  call assert_equal("hoge", actual_response)
 
   " without 'desc' key
-  let l:dict2 = {
+  let dict2 = {
     \ "dummy": "fuga"
     \ }
-  let actual_response = g:common#GetDescFromRes(l:dict2)
-  call assert_equal("", l:actual_response)
+  let actual_response = g:common#GetDescFromRes(dict2)
+  call assert_equal("", actual_response)
 endfunction
 
 function! s:TestGetBoardDictListFromResList()
-  let l:responseList = [
+  let responseList = [
         \ { "id" : "test-id1", "name": "test-name1" },
         \ { "id" : "test-id2", "name": "test-name2" },
         \ { "id" : "test-id3", "name": "test-name3" }
         \ ]
-  let l:expected = [
+  let expected = [
         \ { "id": 1, "boardId" : "test-id1", "name": "test-name1" },
         \ { "id": 2, "boardId" : "test-id2", "name": "test-name2" },
         \ { "id": 3, "boardId" : "test-id3", "name": "test-name3" }
         \ ]
-  let l:actual = g:common#GetBoardDictListFromResList(responseList)
-  call assert_equal(l:expected, l:actual)
+  let actual = g:common#GetBoardDictListFromResList(responseList)
+  call assert_equal(expected, actual)
 endfunction
 
 function! s:TestGetIdFromDictList()
-  let l:dictList = [
+  let dictList = [
         \ { "id": 1, "boardId" : "test-id1", "name": "test-name1" },
         \ { "id": 2, "boardId" : "test-id2", "name": "test-name2" },
         \ { "id": 3, "boardId" : "test-id3", "name": "test-name3" }
         \ ]
-  let l:actual1 = g:common#GetIdFromDictList(l:dictList, 1)
-  let l:actual2 = g:common#GetIdFromDictList(l:dictList, 2)
-  let l:actual3 = g:common#GetIdFromDictList(l:dictList, 3)
-  let l:actual4 = g:common#GetIdFromDictList(l:dictList, 4)
-  call assert_equal("test-id1", l:actual1)
-  call assert_equal("test-id2", l:actual2)
-  call assert_equal("test-id3", l:actual3)
-  call assert_equal("", l:actual4)
+  let actual1 = g:common#GetIdFromDictList(dictList, 1)
+  let actual2 = g:common#GetIdFromDictList(dictList, 2)
+  let actual3 = g:common#GetIdFromDictList(dictList, 3)
+  let actual4 = g:common#GetIdFromDictList(dictList, 4)
+  call assert_equal("test-id1", actual1)
+  call assert_equal("test-id2", actual2)
+  call assert_equal("test-id3", actual3)
+  call assert_equal("", actual4)
 endfunction
 
 function! s:TestGetNameByIdFromList()
-  let l:dictList = [
+  let dictList = [
         \ { "id": 1, "boardId" : "test-id1", "name": "test-name1" },
         \ { "id": 2, "boardId" : "test-id2", "name": "test-name2" },
         \ { "id": 3, "boardId" : "test-id3", "name": "test-name3" }
         \ ]
-  let l:actual1 = g:common#GetNameByIdFromList("test-id1", l:dictList)
-  let l:actual2 = g:common#GetNameByIdFromList("test-id2", l:dictList)
-  let l:actual3 = g:common#GetNameByIdFromList("test-id3", l:dictList)
-  call assert_equal("test-name1", l:actual1)
-  call assert_equal("test-name2", l:actual2)
-  call assert_equal("test-name3", l:actual3)
+  let actual1 = g:common#GetNameByIdFromList("test-id1", dictList)
+  let actual2 = g:common#GetNameByIdFromList("test-id2", dictList)
+  let actual3 = g:common#GetNameByIdFromList("test-id3", dictList)
+  call assert_equal("test-name1", actual1)
+  call assert_equal("test-name2", actual2)
+  call assert_equal("test-name3", actual3)
 endfunction
