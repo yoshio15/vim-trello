@@ -14,13 +14,14 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
 
   " let desc_a_key = '(a)dd new Board'
   " let desc_d_key = '(d)elete a Board'
-  let desc_q_key = '(q) close buffer'
-  let desc_enter_key = '(Enter) show Board'
 
-  call append(0, desc_enter_key)
-  call append(0, desc_q_key)
-  call append(line("$"), '')
-  call append(line("$"), 'select Board below.')
+  let explanations = [
+        \ '(q) close buffer',
+        \ '(Enter) show Board',
+        \ '',
+        \ 'select Board below.',
+        \ ]
+  call setbufline(boards_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:boardDictList)
 
   call cursor(7, 1)
