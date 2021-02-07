@@ -21,22 +21,18 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   nmap <buffer> q <Plug>(close-cards)
   nmap <buffer> <CR> <Plug>(open-cards)
 
-  let desc_a_key = '(a)dd new Task'
-  let desc_b_key = '(b)ack to Lists'
-  let desc_d_key = '(d)elete a Task'
-  let desc_e_key = '(e)dit the title of Task'
-  let desc_q_key = '(q) close buffer'
-  let desc_enter_key = '(Enter) show detail of Task'
   let list_name = g:common#GetNameByIdFromList(a:listId, g:listDictList)
-
-  call append(0, desc_enter_key)
-  call append(0, desc_q_key)
-  call append(0, desc_e_key)
-  call append(0, desc_d_key)
-  call append(0, desc_b_key)
-  call append(0, desc_a_key)
-  call append(line("$"), '')
-  call append(line("$"), printf('List: %s', list_name))
+  let explanations = [
+        \ '(a)dd new Task',
+        \ '(b)ack to Lists',
+        \ '(d)elete a Task',
+        \ '(e)dit the title of Task',
+        \ '(q) close buffer',
+        \ '(Enter) show detail of Task',
+        \ '',
+        \ printf('List: %s', list_name)
+        \ ]
+  call setbufline(cards_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:taskDictList)
 
   call cursor(11, 1)

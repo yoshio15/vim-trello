@@ -19,20 +19,17 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   nmap <buffer> q <Plug>(close-lists)
   nmap <buffer> <CR> <Plug>(open-lists)
 
-  let desc_a_key = '(a)dd new List'
-  let desc_b_key = '(b)ack to boards'
-  let desc_d_key = '(d)elete a List'
-  let desc_q_key = '(q) close buffer'
-  let desc_enter_key = '(Enter) show Tasks'
   let board_name = g:common#GetNameByIdFromList(a:boardId, g:boardDictList)
-
-  call append(0, desc_enter_key)
-  call append(0, desc_q_key)
-  call append(0, desc_d_key)
-  call append(0, desc_b_key)
-  call append(0, desc_a_key)
-  call append(line("$"), '')
-  call append(line("$"), printf('Board: %s', board_name))
+  let explanations = [
+        \ '(a)dd new List',
+        \ '(b)ack to Boards',
+        \ '(d)elete a List',
+        \ '(q) close buffer',
+        \ '(Enter) show Tasks',
+        \ '',
+        \ printf('Board: %s', board_name)
+        \ ]
+  call setbufline(lists_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:listDictList)
 
   call cursor(10, 1)
