@@ -22,13 +22,15 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   let desc_b_key = '(b)ack to Cards'
   let desc_q_key = '(q) close buffer'
 
-  call setline(1, a:desc)
-  call append(0, '----------------------------')
-  call append(0, '" description of a Task.')
-  call append(0, '')
-  call append(0, '')
-  call append(0, desc_q_key)
-  call append(0, desc_b_key)
+  let explanations = [
+        \ '(b)ack to Cards',
+        \ '(q) close buffer',
+        \ '',
+        \ 'Description of a Task',
+        \ '----------------------------'
+        \ ]
+  call setbufline(single_card_buffer, 1, explanations)
+  call append("$", a:desc)
 
 endfunction
 
