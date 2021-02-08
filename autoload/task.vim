@@ -35,7 +35,7 @@ function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
   call setbufline(cards_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:taskDictList)
 
-  call cursor(10, 1)
+  call cursor(len(explanations)+2, 1)
   setlocal nomodifiable
 
 endfunction

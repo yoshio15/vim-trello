@@ -24,7 +24,7 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
   call setbufline(boards_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:boardDictList)
 
-  call cursor(6, 1)
+  call cursor(len(explanations)+2, 1)
   setlocal nomodifiable
 
 endfunction
