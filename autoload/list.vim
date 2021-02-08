@@ -32,7 +32,7 @@ function! g:list#OpenListsNewBuffer(listDict, boardId)
   call setbufline(lists_buffer, 1, explanations)
   call g:common#WriteDictListToBuf(g:listDictList)
 
-  call cursor(10, 1)
+  call cursor(9, 1)
   setlocal nomodifiable
 
 endfunction
