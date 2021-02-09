@@ -30,6 +30,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   call setbufline(single_card_buffer, 1, explanations)
   call append("$", a:desc)
 
+  call cursor(len(explanations)+1, 1)
 endfunction
 
 
