@@ -27,7 +27,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
         \ '(q) close buffer',
         \ '',
         \ 'Description of a Task',
-        \ '----------------------------'
+        \ '----------------------------------------------'
         \ ]
   call setbufline(single_card_buffer, 1, explanations)
   call append("$", a:desc)
