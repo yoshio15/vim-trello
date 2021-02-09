@@ -1,7 +1,7 @@
 " =================================
 " Detail of a Task
 " =================================
-function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
+function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
 
   if a:desc == ""
     return
@@ -11,7 +11,6 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   call g:common#CloseBuf()
   call g:common#OpenNewBuf(single_card_buffer)
 
-  set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
   nmap <buffer> b <Plug>(get-cards)
@@ -20,6 +19,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   let explanations = [
         \ '(b)ack to Cards',
         \ '(q) close buffer',
+        \ '(:w) edit description of the task',
         \ '',
         \ 'Description of a Task',
         \ '----------------------------------------------'
@@ -28,8 +28,18 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   call append("$", a:desc)
 
   call cursor(len(explanations)+1, 1)
+
+  augroup task-detail
+    au!
+    exec 'au BufWriteCmd <buffer> call s:UpdateTaskDetail("' . a:cardId . '", "' . a:listId . '", "' . a:boardId . '")'
+  augroup END
+
 endfunction
 
 
-function! EditCardDesc()
+function! s:UpdateTaskDetail(cardId, listId, boardId)
+  let desc = join(getline(7, "$"), '')
+  let cmd = g:command#UpdateCardDescCmd(a:cardId, UrlEncode(desc))
+  call system(cmd)
+  echomsg "updated task detail."
 endfunction

@@ -158,7 +158,7 @@ endfunction
 " manipulate buffer
 " =================================
 function! g:common#CloseBuf()
-  execute 'bwipeout'
+  execute 'bwipeout!'
 endfunction
 
 function! g:common#OpenNewBuf(bufName)

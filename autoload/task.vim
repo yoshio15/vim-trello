@@ -112,7 +112,7 @@ function! GetSingleCard(cardName, listId, boardId)
     echomsg "no description on this Task"
   endif
 
-  call g:task_detail#OpenSingleCardNewBuffer(desc, a:listId, a:boardId)
+  call g:task_detail#OpenSingleCardNewBuffer(desc, a:listId, a:boardId, cardId)
 
 endfunction
 
