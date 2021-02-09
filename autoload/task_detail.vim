@@ -17,9 +17,6 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   nmap <buffer> b <Plug>(get-cards)
   nmap <buffer> q <Plug>(close-buf)
 
-  let desc_b_key = '(b)ack to Cards'
-  let desc_q_key = '(q) close buffer'
-
   let explanations = [
         \ '(b)ack to Cards',
         \ '(q) close buffer',
