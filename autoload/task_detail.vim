@@ -15,8 +15,6 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId)
   exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
   nmap <buffer> b <Plug>(get-cards)
-  " TODO add edit description of task function
-  " nmap <buffer> e <Plug>(edit-card)
   nmap <buffer> q <Plug>(close-buf)
 
   let desc_b_key = '(b)ack to Cards'
