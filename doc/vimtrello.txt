@@ -104,3 +104,6 @@ CONTENTS					*vim_trello-contents*
 
     q                                                  *vim_trello-tasks-detail-q*
       close buffer
+
+    :w                                                 *vim_trello-tasks-detail-:w*
+      update description of the Task

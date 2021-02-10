@@ -56,6 +56,7 @@ you can open your boards list of trello assosiaded with your Trello account by t
 | --- | ------ |
 | b | back to Tasks |
 | q | close buffer |
+| :w | update description of the task |
 
 ## Author
 Yoshio Kondo
