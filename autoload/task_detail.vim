@@ -3,10 +3,6 @@
 " =================================
 function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
 
-  if a:desc == ""
-    return
-  endif
-
   let single_card_buffer = 'CARD'
   call g:common#CloseBuf()
   call g:common#OpenNewBuf(single_card_buffer)

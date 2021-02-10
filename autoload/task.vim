@@ -108,9 +108,6 @@ function! GetSingleCard(cardName, listId, boardId)
   endtry
 
   let desc = g:common#GetDescFromRes(result)
-  if desc == ""
-    echomsg "no description on this Task"
-  endif
 
   call g:task_detail#OpenSingleCardNewBuffer(desc, a:listId, a:boardId, cardId)
 
