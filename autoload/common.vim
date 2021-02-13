@@ -15,6 +15,11 @@ function! g:common#CheckEnv()
   endif
 endfunction
 
+function! common#BuildTrelloApiUrl(path)
+  return printf("https://api.trello.com%s?key=%s&token=%s",
+        \ a:path, g:vimTrelloApiKey, g:vimTrelloToken)
+endfunction
+
 function! g:common#GetIdFromLine(line)
   return a:line[stridx(a:line,'(') + 1 : stridx(a:line,')') - 1]
 endfunction
