@@ -1,7 +1,7 @@
 " =================================
 " Board
 " =================================
-function! g:board#OpenBoardsNewBuffer(boardDict)
+function! g:board#OpenBoardsNewBuffer()
 
   let boards_buffer = 'BOARDS'
   call g:common#OpenNewBuf(boards_buffer)
@@ -11,9 +11,6 @@ function! g:board#OpenBoardsNewBuffer(boardDict)
   nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call GetLists()<CR>
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
-
-  " let desc_a_key = '(a)dd new Board'
-  " let desc_d_key = '(d)elete a Board'
 
   let explanations = [
         \ '(q) close buffer',
@@ -72,14 +69,7 @@ endfunction
 
 
 function! GetBoards()
-  let cmd = g:command#GetBoardsCmd()
-  try
-    let result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-  let boardDict = g:common#GetIdAndNameDictFromResList(result)
+  call trello#SetBoardList()
   call g:common#CloseBuf()
-  call g:board#OpenBoardsNewBuffer(boardDict)
+  call g:board#OpenBoardsNewBuffer()
 endfunction

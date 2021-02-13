@@ -13,11 +13,11 @@ function! g:trello#VimTrello()
     return
   endtry
 
-  let boardDict = s:GetBoards()
-  call g:board#OpenBoardsNewBuffer(boardDict)
+  call trello#SetBoardList()
+  call g:board#OpenBoardsNewBuffer()
 endfunction
 
-function! s:GetBoards() abort
+function! trello#SetBoardList() abort
   let path = "/1/members/me/boards"
   let url = common#BuildTrelloApiUrl(path)
   let response = http#Get(url)
@@ -30,7 +30,7 @@ function! s:GetBoards() abort
     endtry
     " set board list to global
     let g:boardDictList = g:common#GetBoardDictListFromResList(result)
-    return g:common#GetIdAndNameDictFromResList(result)
+    return
   endif
 
   throw response['content']
