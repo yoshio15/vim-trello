@@ -55,16 +55,27 @@ function! s:CheckSelectedLine(char)
 endfunction
 
 function! GetListsByBoardId(boardId)
-  let cmd = g:command#GetListsCmd(a:boardId)
-  try
-    let result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
+  call board#SetList(a:boardId)
+  call g:list#OpenListsNewBuffer(a:boardId)
+endfunction
+
+function! board#SetList(boardId) abort
+  let path = printf("/1/boards/%s/lists", a:boardId)
+  let url = common#BuildTrelloApiUrl(path)
+  let response = http#Get(url)
+
+  if response['status'] == 200
+    try
+      let result = json_decode(response['content'])
+    catch
+      throw v:exception
+    endtry
+    " set list to global
+    let g:listDictList = g:common#GetBoardDictListFromResList(result)
     return
-  endtry
-  let listDict = g:common#GetIdAndNameDictFromResList(result)
-  let g:listDictList = g:common#GetBoardDictListFromResList(result)
-  call g:list#OpenListsNewBuffer(listDict, a:boardId)
+  endif
+
+  throw response['content']
 endfunction
 
 

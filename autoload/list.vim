@@ -1,7 +1,7 @@
 " =================================
 " Lists
 " =================================
-function! g:list#OpenListsNewBuffer(listDict, boardId)
+function! g:list#OpenListsNewBuffer(boardId)
 
   let lists_buffer = 'LISTS'
   call g:common#CloseBuf()
