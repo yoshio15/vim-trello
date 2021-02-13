@@ -35,10 +35,3 @@ function! s:GetBoards() abort
 
   throw response['content']
 endfunction
-
-" =================================
-" for debug
-"  - off comment out function-call below
-"  - debug this script by `:so %`
-" =================================
-" call g:trello#VimTrello()
