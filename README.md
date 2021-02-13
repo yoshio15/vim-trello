@@ -1,3 +1,5 @@
+[![Powered by vital.vim](https://img.shields.io/badge/powered%20by-vital.vim-80273f.svg)](https://github.com/vim-jp/vital.vim)
+
 # vim-trello
 Vim plugin for [Trello](https://trello.com/)  
 Japanese README.md is [here](https://github.com/yoshio15/vim-trello/blob/main/README_ja.md).
