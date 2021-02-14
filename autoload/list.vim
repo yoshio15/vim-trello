@@ -51,6 +51,24 @@ function! OpenAddNewListArea(boardId)
   call GetListsByBoardId(a:boardId)
 endfunction
 
+function! list#SetTaskList(listId) abort
+  let path = printf("/1/lists/%s/cards", a:listId)
+  let url = common#BuildTrelloApiUrl(path)
+  let response = http#Get(url)
+
+  if response['status'] == 200
+    try
+      let result = json_decode(response['content'])
+    catch
+      throw v:exception
+    endtry
+    " set Task list to global
+    let g:taskDictList = g:common#GetBoardDictListFromResList(result)
+    return
+  endif
+
+  throw response['content']
+endfunction
 
 function! AddNewList(boardId, title)
   let cmd = g:command#AddNewListCmd(a:boardId, a:title)
@@ -107,15 +125,6 @@ function! s:CheckSelectedLine(char)
 endfunction
 
 function! GetCardsById(listId, boardId)
-  let cmd = g:command#GetCardsCmd(a:listId)
-  try
-    let result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-  let listDict = g:common#GetIdAndNameDictFromResList(result)
-  let g:taskDictList = g:common#GetBoardDictListFromResList(result)
-
-  call g:task#OpenCardsNewBuffer(listDict, a:listId, a:boardId)
+  call list#SetTaskList(a:listId)
+  call g:task#OpenCardsNewBuffer(a:listId, a:boardId)
 endfunction

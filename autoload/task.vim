@@ -1,7 +1,7 @@
 " =================================
 " Tasks
 " =================================
-function! g:task#OpenCardsNewBuffer(listDict, listId, boardId)
+function! g:task#OpenCardsNewBuffer(listId, boardId)
 
   let cards_buffer = 'CARDS'
   call g:common#CloseBuf()
