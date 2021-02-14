@@ -87,9 +87,7 @@ function! DeleteCard(cardName, listId, boardId)
   endif
 endfunction
 
-" get single card
 function! GetSingleCard(cardName, listId, boardId)
-
   try
     call s:CheckSelectedLine(a:cardName[0])
   catch
@@ -98,19 +96,26 @@ function! GetSingleCard(cardName, listId, boardId)
   endtry
 
   let cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
-  let cmd = g:command#GetSingleCardCmd(cardId)
-
-  try
-    let result = json_decode(system(cmd))
-  catch
-    echomsg v:exception
-    return
-  endtry
-
-  let desc = g:common#GetDescFromRes(result)
+  let desc = s:GetTaskDesc(cardId)
 
   call g:task_detail#OpenSingleCardNewBuffer(desc, a:listId, a:boardId, cardId)
+endfunction
 
+function! s:GetTaskDesc(cardId)
+  let path = printf("/1/cards/%s", a:cardId)
+  let url = common#BuildTrelloApiUrl(path)
+  let response = http#Get(url)
+
+  if response['status'] == 200
+    try
+      let result = json_decode(response['content'])
+    catch
+      throw v:exception
+    endtry
+    return g:common#GetDescFromRes(result)
+  endif
+
+  throw response['content']
 endfunction
 
 function! s:CheckSelectedLine(char)
