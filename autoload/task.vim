@@ -41,6 +41,25 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
 endfunction
 
 
+function! task#SetTaskList(listId) abort
+  let path = printf("/1/lists/%s/cards", a:listId)
+  let url = common#BuildTrelloApiUrl(path)
+  let response = http#Get(url)
+
+  if response['status'] == 200
+    try
+      let result = json_decode(response['content'])
+    catch
+      throw v:exception
+    endtry
+    " set Task list to global
+    let g:taskDictList = g:common#GetBoardDictListFromResList(result)
+    return
+  endif
+
+  throw response['content']
+endfunction
+
 function! OpenAddNewTaskArea(listId, boardId)
   " accept user input
   call inputsave()

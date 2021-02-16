@@ -26,6 +26,24 @@ function! g:board#OpenBoardsNewBuffer()
 
 endfunction
 
+function! board#SetBoardList() abort
+  let path = "/1/members/me/boards"
+  let url = common#BuildTrelloApiUrl(path)
+  let response = http#Get(url)
+
+  if response['status'] == 200
+    try
+      let result = json_decode(response['content'])
+    catch
+      throw v:exception
+    endtry
+    " set board list to global
+    let g:boardDictList = g:common#GetBoardDictListFromResList(result)
+    return
+  endif
+
+  throw response['content']
+endfunction
 
 " get Boards from Lists
 function! GetLists()
@@ -55,32 +73,12 @@ function! s:CheckSelectedLine(char)
 endfunction
 
 function! GetListsByBoardId(boardId)
-  call board#SetList(a:boardId)
+  call list#SetList(a:boardId)
   call g:list#OpenListsNewBuffer(a:boardId)
 endfunction
 
-function! board#SetList(boardId) abort
-  let path = printf("/1/boards/%s/lists", a:boardId)
-  let url = common#BuildTrelloApiUrl(path)
-  let response = http#Get(url)
-
-  if response['status'] == 200
-    try
-      let result = json_decode(response['content'])
-    catch
-      throw v:exception
-    endtry
-    " set list to global
-    let g:listDictList = g:common#GetBoardDictListFromResList(result)
-    return
-  endif
-
-  throw response['content']
-endfunction
-
-
 function! GetBoards()
-  call trello#SetBoardList()
+  call board#SetBoardList()
   call g:common#CloseBuf()
   call g:board#OpenBoardsNewBuffer()
 endfunction
