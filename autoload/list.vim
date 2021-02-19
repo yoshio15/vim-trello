@@ -8,7 +8,7 @@ function! g:list#OpenListsNewBuffer(boardId)
   call g:common#OpenNewBuf(lists_buffer)
 
   set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call OpenAddNewListArea("' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call <SID>OpenAddNewListArea("' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call <SID>GetBoards()<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
@@ -64,7 +64,7 @@ function! list#SetList(boardId) abort
 endfunction
 
 
-function! OpenAddNewListArea(boardId)
+function! s:OpenAddNewListArea(boardId)
   call inputsave()
   let userInput=input("Enter title of List which you want to add.\nnew List name: ")
   call inputrestore()
