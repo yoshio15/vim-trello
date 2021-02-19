@@ -8,11 +8,11 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
   call g:common#OpenNewBuf(cards_buffer)
 
   set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call <SID>OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call board#GetListsByBoardId("' . a:boardId . '")<CR>'
-  exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
-  exec 'nnoremap <silent> <buffer> <Plug>(edit-card) :<C-u>call EditCardTitle(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
-  exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call <SID>DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(edit-card) :<C-u>call <SID>EditCardTitle(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call <SID>GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> b <Plug>(get-lists)
@@ -60,7 +60,7 @@ function! task#SetTaskList(listId) abort
   throw response['content']
 endfunction
 
-function! OpenAddNewTaskArea(listId, boardId)
+function! s:OpenAddNewTaskArea(listId, boardId)
   " accept user input
   call inputsave()
   let userInput=input("Enter title of card which you want to add.\nTask name: ")
@@ -70,20 +70,20 @@ function! OpenAddNewTaskArea(listId, boardId)
     return
   endif
 
-  call AddNewCard(a:listId, UrlEncode(userInput))
-  call GetCardsById(a:listId, a:boardId)
+  call s:AddNewCard(a:listId, UrlEncode(userInput))
+  call list#GetCardsById(a:listId, a:boardId)
 endfunction
 
 
 " add single card
-function! AddNewCard(listId, title)
+function! s:AddNewCard(listId, title)
   let cmd = g:command#AddNewCardCmd(a:listId, a:title)
   call system(cmd)
 endfunction
 
 
 " delete card
-function! DeleteCard(cardName, listId, boardId)
+function! s:DeleteCard(cardName, listId, boardId)
   let lineId = trim(getline("."))[0]
   try
     call s:CheckSelectedLine(lineId)
@@ -100,13 +100,13 @@ function! DeleteCard(cardName, listId, boardId)
     let cardId = g:common#GetIdFromDictList(g:taskDictList, lineId)
     let cmd = g:command#DeleteCardCmd(cardId)
     call system(cmd)
-    call GetCardsById(a:listId, a:boardId)
+    call list#GetCardsById(a:listId, a:boardId)
   else
     echomsg "not deleted task."
   endif
 endfunction
 
-function! GetSingleCard(cardName, listId, boardId)
+function! s:GetSingleCard(cardName, listId, boardId)
   try
     call s:CheckSelectedLine(a:cardName[0])
   catch
@@ -150,7 +150,7 @@ function! s:CheckSelectedLine(char)
   throw err_msg
 endfunction
 
-function! EditCardTitle(cardName, listId, boardId)
+function! s:EditCardTitle(cardName, listId, boardId)
 
   if a:cardName == ""
     return
@@ -166,6 +166,6 @@ function! EditCardTitle(cardName, listId, boardId)
   let cmd = g:command#UpdateCardTitleCmd(cardId, UrlEncode(userInput))
 
   call system(cmd)
-  call GetCardsById(a:listId, a:boardId)
+  call list#GetCardsById(a:listId, a:boardId)
 
 endfunction

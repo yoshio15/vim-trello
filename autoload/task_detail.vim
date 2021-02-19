@@ -7,7 +7,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
   call g:common#CloseBuf()
   call g:common#OpenNewBuf(single_card_buffer)
 
-  exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(get-cards) :<C-u>call list#GetCardsById("' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-buf) :<C-u>bwipeout!<CR>
   nmap <buffer> b <Plug>(get-cards)
   nmap <buffer> q <Plug>(close-buf)

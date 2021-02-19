@@ -10,9 +10,9 @@ function! g:list#OpenListsNewBuffer(boardId)
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call <SID>OpenAddNewListArea("' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call <SID>GetBoards()<CR>
-  exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call <SID>DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
-  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards("' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call <SID>GetCards("' . a:boardId . '")<CR>'
   nmap <buffer> a <Plug>(add-list)
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> d <Plug>(delete-list)
@@ -73,16 +73,16 @@ function! s:OpenAddNewListArea(boardId)
     return
   endif
 
-  call AddNewList(a:boardId, UrlEncode(userInput))
+  call s:AddNewList(a:boardId, UrlEncode(userInput))
   call board#GetListsByBoardId(a:boardId)
 endfunction
 
-function! AddNewList(boardId, title)
+function! s:AddNewList(boardId, title)
   let cmd = g:command#AddNewListCmd(a:boardId, a:title)
   call system(cmd)
 endfunction
 
-function! DeleteList(listName, boardId)
+function! s:DeleteList(listName, boardId)
   let lineId = trim(getline("."))[0]
   try
     call s:CheckSelectedLine(lineId)
@@ -106,7 +106,7 @@ function! DeleteList(listName, boardId)
 endfunction
 
 " get Cards from Lists
-function! GetCards(boardId)
+function! s:GetCards(boardId)
   let lineId = trim(getline("."))[0]
   try
     call s:CheckSelectedLine(lineId)
@@ -115,7 +115,7 @@ function! GetCards(boardId)
     return
   endtry
   let listId = g:common#GetIdFromDictList(g:listDictList, lineId)
-  call GetCardsById(listId, a:boardId)
+  call list#GetCardsById(listId, a:boardId)
 endfunction
 
 function! s:CheckSelectedLine(char)
@@ -131,7 +131,7 @@ function! s:CheckSelectedLine(char)
   throw err_msg
 endfunction
 
-function! GetCardsById(listId, boardId)
+function! list#GetCardsById(listId, boardId)
   call task#SetTaskList(a:listId)
   call g:task#OpenCardsNewBuffer(a:listId, a:boardId)
 endfunction
