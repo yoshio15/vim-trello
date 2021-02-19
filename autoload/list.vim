@@ -74,7 +74,7 @@ function! OpenAddNewListArea(boardId)
   endif
 
   call AddNewList(a:boardId, UrlEncode(userInput))
-  call GetListsByBoardId(a:boardId)
+  call board#GetListsByBoardId(a:boardId)
 endfunction
 
 function! AddNewList(boardId, title)
@@ -99,7 +99,7 @@ function! DeleteList(listName, boardId)
     let listId = g:common#GetIdFromDictList(g:listDictList, lineId)
     let cmd = g:command#DeleteListCmd(listId)
     call system(cmd)
-    call GetListsByBoardId(a:boardId)
+    call board#GetListsByBoardId(a:boardId)
   else
     echomsg "not deleted list."
   endif

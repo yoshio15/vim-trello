@@ -9,7 +9,7 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-card) :<C-u>call OpenAddNewTaskArea("' . a:listId . '", "' . a:boardId . '")<CR>'
-  exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call GetListsByBoardId("' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(get-lists) :<C-u>call board#GetListsByBoardId("' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(edit-card) :<C-u>call EditCardTitle(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'

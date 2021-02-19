@@ -56,7 +56,7 @@ function! s:GetLists()
   endtry
 
   let boardId = g:common#GetIdFromDictList(g:boardDictList, lineId)
-  call GetListsByBoardId(boardId)
+  call board#GetListsByBoardId(boardId)
 endfunction
 
 function! s:CheckSelectedLine(char)
@@ -72,7 +72,7 @@ function! s:CheckSelectedLine(char)
   throw err_msg
 endfunction
 
-function! GetListsByBoardId(boardId)
+function! board#GetListsByBoardId(boardId)
   call list#SetList(a:boardId)
   call g:list#OpenListsNewBuffer(a:boardId)
 endfunction
