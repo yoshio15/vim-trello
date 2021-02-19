@@ -8,7 +8,7 @@ function! g:board#OpenBoardsNewBuffer()
 
   set buftype=nofile
   nnoremap <silent> <buffer> <Plug>(close-boards) :<C-u>bwipeout!<CR>
-  nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call GetLists()<CR>
+  nnoremap <silent> <buffer> <Plug>(open-boards) :<C-u>call <SID>GetLists()<CR>
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
 
@@ -46,7 +46,7 @@ function! board#SetBoardList() abort
 endfunction
 
 " get Boards from Lists
-function! GetLists()
+function! s:GetLists()
   let lineId = trim(getline('.'))[0]
   try
     call s:CheckSelectedLine(lineId)
