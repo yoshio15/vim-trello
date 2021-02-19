@@ -9,7 +9,7 @@ function! g:list#OpenListsNewBuffer(boardId)
 
   set buftype=nofile
   exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call OpenAddNewListArea("' . a:boardId . '")<CR>'
-  nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call GetBoards()<CR>
+  nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call <SID>GetBoards()<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
   exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call GetCards("' . a:boardId . '")<CR>'
@@ -35,6 +35,12 @@ function! g:list#OpenListsNewBuffer(boardId)
   call cursor(len(explanations)+2, 1)
   setlocal nomodifiable
 
+endfunction
+
+function! s:GetBoards()
+  call board#SetBoardList()
+  call g:common#CloseBuf()
+  call g:board#OpenBoardsNewBuffer()
 endfunction
 
 

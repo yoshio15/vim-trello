@@ -76,9 +76,3 @@ function! GetListsByBoardId(boardId)
   call list#SetList(a:boardId)
   call g:list#OpenListsNewBuffer(a:boardId)
 endfunction
-
-function! GetBoards()
-  call board#SetBoardList()
-  call g:common#CloseBuf()
-  call g:board#OpenBoardsNewBuffer()
-endfunction
