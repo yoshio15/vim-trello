@@ -43,7 +43,6 @@ function! s:GetBoards()
   call g:board#OpenBoardsNewBuffer()
 endfunction
 
-
 function! list#SetList(boardId) abort
   let path = printf("/1/boards/%s/lists", a:boardId)
   let url = common#BuildTrelloApiUrl(path)
@@ -62,7 +61,6 @@ function! list#SetList(boardId) abort
 
   throw response['content']
 endfunction
-
 
 function! s:OpenAddNewListArea(boardId)
   call inputsave()
@@ -105,7 +103,6 @@ function! s:DeleteList(listName, boardId)
   endif
 endfunction
 
-" get Cards from Lists
 function! s:GetCards(boardId)
   let lineId = trim(getline("."))[0]
   try

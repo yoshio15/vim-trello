@@ -32,7 +32,6 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
 
 endfunction
 
-
 function! s:UpdateTaskDetail(cardId, listId, boardId)
   let desc = join(getline(7, "$"), '')
   let cmd = g:command#UpdateCardDescCmd(a:cardId, UrlEncode(desc))

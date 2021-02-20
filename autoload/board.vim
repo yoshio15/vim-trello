@@ -45,7 +45,6 @@ function! board#SetBoardList() abort
   throw response['content']
 endfunction
 
-" get Boards from Lists
 function! s:GetLists()
   let lineId = trim(getline('.'))[0]
   try

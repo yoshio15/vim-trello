@@ -40,7 +40,6 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
 
 endfunction
 
-
 function! task#SetTaskList(listId) abort
   let path = printf("/1/lists/%s/cards", a:listId)
   let url = common#BuildTrelloApiUrl(path)
@@ -74,15 +73,11 @@ function! s:OpenAddNewTaskArea(listId, boardId)
   call list#GetCardsById(a:listId, a:boardId)
 endfunction
 
-
-" add single card
 function! s:AddNewCard(listId, title)
   let cmd = g:command#AddNewCardCmd(a:listId, a:title)
   call system(cmd)
 endfunction
 
-
-" delete card
 function! s:DeleteCard(cardName, listId, boardId)
   let lineId = trim(getline("."))[0]
   try
