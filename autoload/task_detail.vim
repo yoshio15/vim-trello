@@ -13,18 +13,19 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
   nmap <buffer> q <Plug>(close-buf)
 
   let task_name = g:common#GetNameByIdFromList(a:cardId, g:taskDictList)
-  let explanations = [
+  let lines = [
         \ '(b)ack to Cards',
         \ '(q) close buffer',
         \ '(:w) edit description of the task',
         \ '',
         \ printf('Task: %s', task_name),
-        \ '----------------------------------------------'
+        \ '----------------------------------------------',
+        \ a:desc,
+        \ '----------------------------------------------',
         \ ]
-  call setbufline(single_card_buffer, 1, explanations)
-  call append("$", a:desc)
+  call setbufline(single_card_buffer, 1, lines)
 
-  call cursor(len(explanations)+1, 1)
+  call cursor(len(lines)+1, 1)
 
   augroup task-detail
     au!
@@ -34,7 +35,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
 endfunction
 
 function! s:UpdateTaskDetail(cardId, listId, boardId)
-  let desc = join(getline(7, "$"), '')
+  let desc = join(getline(7, line("$")-1), '')
   let cmd = g:command#UpdateCardDescCmd(a:cardId, UrlEncode(desc))
   call system(cmd)
   echomsg "updated task detail."
