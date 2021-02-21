@@ -12,12 +12,13 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
   nmap <buffer> b <Plug>(get-cards)
   nmap <buffer> q <Plug>(close-buf)
 
+  let task_name = g:common#GetNameByIdFromList(a:cardId, g:taskDictList)
   let explanations = [
         \ '(b)ack to Cards',
         \ '(q) close buffer',
         \ '(:w) edit description of the task',
         \ '',
-        \ 'Description of a Task',
+        \ printf('Task: %s', task_name),
         \ '----------------------------------------------'
         \ ]
   call setbufline(single_card_buffer, 1, explanations)
