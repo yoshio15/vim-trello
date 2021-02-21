@@ -4,6 +4,7 @@
 let g:boardDictList = []
 let g:listDictList = []
 let g:taskDictList = []
+let g:BUFFER_WIDTH_HYPHEN = '----------------------------------------------'
 
 function! g:trello#VimTrello()
   try

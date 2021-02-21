@@ -21,9 +21,9 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
         \ '(:w) edit description of the task',
         \ '',
         \ printf('Task: %s', task_name),
-        \ '----------------------------------------------',
+        \ g:BUFFER_WIDTH_HYPHEN,
         \ a:desc == '' ? s:NO_TASK_DESCRIPTION : a:desc,
-        \ '----------------------------------------------',
+        \ g:BUFFER_WIDTH_HYPHEN,
         \ ]
   call setbufline(single_card_buffer, 1, lines)
 
