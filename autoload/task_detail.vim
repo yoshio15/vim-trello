@@ -1,6 +1,8 @@
 " =================================
 " Detail of a Task
 " =================================
+let s:NO_TASK_DESCRIPTION = "no task description"
+
 function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
 
   let single_card_buffer = 'CARD'
@@ -20,7 +22,7 @@ function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)
         \ '',
         \ printf('Task: %s', task_name),
         \ '----------------------------------------------',
-        \ a:desc,
+        \ a:desc == '' ? s:NO_TASK_DESCRIPTION : a:desc,
         \ '----------------------------------------------',
         \ ]
   call setbufline(single_card_buffer, 1, lines)
@@ -36,6 +38,10 @@ endfunction
 
 function! s:UpdateTaskDetail(cardId, listId, boardId)
   let desc = join(getline(7, line("$")-1), '')
+  if desc == s:NO_TASK_DESCRIPTION
+    return
+  endif
+
   let cmd = g:command#UpdateCardDescCmd(a:cardId, UrlEncode(desc))
   call system(cmd)
   echomsg "updated task detail."
