@@ -77,8 +77,9 @@ function! s:OpenAddNewListArea(boardId)
 endfunction
 
 function! s:AddNewList(boardId, title)
-  let cmd = g:command#AddNewListCmd(a:boardId, a:title)
-  call system(cmd)
+  let path = "/1/lists"
+  let url = printf('%s&idBoard=%s&name=%s', common#BuildTrelloApiUrl(path), a:boardId, a:title)
+  call http#Post(url)
 endfunction
 
 function! s:DeleteList(listName, boardId)

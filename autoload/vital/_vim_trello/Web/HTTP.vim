@@ -228,11 +228,12 @@ function! s:_build_last_response(responses) abort
   return last_response
 endfunction
 
+  " \   'client': ['python', 'curl', 'wget', 'python3', 'python2'],
 function! s:_build_settings(args) abort
   let settings = {
   \   'method': 'GET',
   \   'headers': {},
-  \   'client': ['python', 'curl', 'wget', 'python3', 'python2'],
+  \   'client': ['curl'],
   \   'maxRedirect': 20,
   \   'retry': 1,
   \ }

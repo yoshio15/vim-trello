@@ -18,7 +18,7 @@ function! http#Post(url, ...) abort
   \    'url': a:url,
   \    'data': a:0 > 0 ? a:1 : {},
   \    'headers': a:0 > 1 ? a:2 : {},
-  \    'method': a:0 > 2 ? a:3 : 'POST',
+  \    'method': 'POST',
   \ }
   return s:HTTP.request(settings)
 endfunction
