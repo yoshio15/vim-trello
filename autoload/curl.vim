@@ -1,6 +1,7 @@
-" =================================
-" curl commands
-" =================================
+" Curl
+" Author: ykondo
+" License: MIT
+
 function! g:curl#CurlGetCmd(url)
   return printf("curl -s --request GET --url \'%s\'", a:url)
 endfunction

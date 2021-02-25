@@ -1,3 +1,7 @@
+" HTTP
+" Author: ykondo
+" License: MIT
+
 let s:HTTP = vital#vim_trello#import('Web.HTTP')
 
 function! http#Get(url, ...) abort

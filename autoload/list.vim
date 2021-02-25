@@ -1,6 +1,7 @@
-" =================================
-" Lists
-" =================================
+" List
+" Author: ykondo
+" License: MIT
+
 function! g:list#OpenListsNewBuffer(boardId)
 
   let lists_buffer = 'LISTS'

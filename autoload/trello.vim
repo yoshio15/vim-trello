@@ -1,6 +1,7 @@
-" =================================
-" 【Main】vim-trello
-" =================================
+" Trello
+" Author: ykondo
+" License: MIT
+
 let g:boardDictList = []
 let g:listDictList = []
 let g:taskDictList = []

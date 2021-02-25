@@ -1,6 +1,7 @@
-" =================================
-" Detail of a Task
-" =================================
+" Task Detail
+" Author: ykondo
+" License: MIT
+
 let s:NO_TASK_DESCRIPTION = "no task description"
 
 function! g:task_detail#OpenSingleCardNewBuffer(desc, listId, boardId, cardId)

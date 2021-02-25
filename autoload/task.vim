@@ -1,6 +1,7 @@
-" =================================
-" Tasks
-" =================================
+" Task
+" Author: ykondo
+" License: MIT
+
 function! g:task#OpenCardsNewBuffer(listId, boardId)
 
   let cards_buffer = 'CARDS'

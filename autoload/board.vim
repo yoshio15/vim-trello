@@ -1,6 +1,7 @@
-" =================================
 " Board
-" =================================
+" Author: ykondo
+" License: MIT
+
 function! g:board#OpenBoardsNewBuffer()
 
   let boards_buffer = 'BOARDS'

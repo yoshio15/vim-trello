@@ -1,6 +1,7 @@
-" =================================
-" 【Common functions】
-" =================================
+" Common
+" Author: ykondo
+" License: MIT
+
 let s:buffer_with = 50
 
 function! g:common#CheckEnv()

@@ -1,6 +1,7 @@
-" =================================
-" commands
-" =================================
+" Commands
+" Author: ykondo
+" License: MIT
+
 function! g:command#GetBoardsCmd()
   let path = "/1/members/me/boards"
   let url = s:BuildTrelloApiUrl(path)
