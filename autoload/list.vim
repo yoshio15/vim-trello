@@ -97,8 +97,9 @@ function! s:DeleteList(listName, boardId)
 
   if userInput ==? "y"
     let listId = g:common#GetIdFromDictList(g:listDictList, lineId)
-    let cmd = g:command#DeleteListCmd(listId)
-    call system(cmd)
+    let path = printf("/1/lists/%s/closed", listId)
+    let url = printf('%s&value=true', common#BuildTrelloApiUrl(path))
+    call http#Put(url)
     call board#GetListsByBoardId(a:boardId)
   else
     echomsg "not deleted list."
