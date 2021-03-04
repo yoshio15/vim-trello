@@ -5,15 +5,18 @@
 function! g:list#OpenListsNewBuffer(boardId)
 
   let lists_buffer = 'LISTS'
+  " set boardId to script local not to pass as args in many places.
+  let s:boardId = a:boardId
+
   call g:common#CloseBuf()
   call g:common#OpenNewBuf(lists_buffer)
 
   set buftype=nofile
-  exec 'nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call <SID>OpenAddNewListArea("' . a:boardId . '")<CR>'
+  nnoremap <silent> <buffer> <Plug>(add-list) :<C-u>call <SID>OpenAddNewListArea()<CR>
   nnoremap <silent> <buffer> <Plug>(get-boards) :<C-u>call <SID>GetBoards()<CR>
-  exec 'nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call <SID>DeleteList(trim(getline(".")), "' . a:boardId . '")<CR>'
+  nnoremap <silent> <buffer> <Plug>(delete-list) :<C-u>call <SID>DeleteList()<CR>
   nnoremap <silent> <buffer> <Plug>(close-lists) :<C-u>bwipeout!<CR>
-  exec 'nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call <SID>GetCards("' . a:boardId . '")<CR>'
+  nnoremap <silent> <buffer> <Plug>(open-lists) :<C-u>call <SID>GetCards()<CR>
   nmap <buffer> a <Plug>(add-list)
   nmap <buffer> b <Plug>(get-boards)
   nmap <buffer> d <Plug>(delete-list)
@@ -63,7 +66,7 @@ function! list#SetList(boardId) abort
   throw response['content']
 endfunction
 
-function! s:OpenAddNewListArea(boardId)
+function! s:OpenAddNewListArea()
   call inputsave()
   let userInput=input("Enter title of List which you want to add.\nnew List name: ")
   call inputrestore()
@@ -72,17 +75,18 @@ function! s:OpenAddNewListArea(boardId)
     return
   endif
 
-  call s:AddNewList(a:boardId, UrlEncode(userInput))
-  call board#GetListsByBoardId(a:boardId)
+  call s:AddNewList(UrlEncode(userInput))
+  call board#GetListsByBoardId(s:boardId)
 endfunction
 
-function! s:AddNewList(boardId, title)
+function! s:AddNewList(title)
   let path = "/1/lists"
-  let url = printf('%s&idBoard=%s&name=%s', common#BuildTrelloApiUrl(path), a:boardId, a:title)
+  let url = printf('%s&idBoard=%s&name=%s', common#BuildTrelloApiUrl(path), s:boardId, a:title)
   call http#Post(url)
 endfunction
 
-function! s:DeleteList(listName, boardId)
+function! s:DeleteList()
+  let listName = trim(getline("."))
   let lineId = trim(getline("."))[0]
   try
     call s:CheckSelectedLine(lineId)
@@ -92,7 +96,7 @@ function! s:DeleteList(listName, boardId)
   endtry
 
   call inputsave()
-  let userInput=input(printf("Are you sure to delete the list:\n%s(yN): ", a:listName))
+  let userInput=input(printf("Are you sure to delete the list:\n%s(yN): ", listName))
   call inputrestore()
 
   if userInput ==? "y"
@@ -100,13 +104,13 @@ function! s:DeleteList(listName, boardId)
     let path = printf("/1/lists/%s/closed", listId)
     let url = printf('%s&value=true', common#BuildTrelloApiUrl(path))
     call http#Put(url)
-    call board#GetListsByBoardId(a:boardId)
+    call board#GetListsByBoardId(s:boardId)
   else
     echomsg "not deleted list."
   endif
 endfunction
 
-function! s:GetCards(boardId)
+function! s:GetCards()
   let lineId = trim(getline("."))[0]
   try
     call s:CheckSelectedLine(lineId)
@@ -115,7 +119,7 @@ function! s:GetCards(boardId)
     return
   endtry
   let listId = g:common#GetIdFromDictList(g:listDictList, lineId)
-  call list#GetCardsById(listId, a:boardId)
+  call list#GetCardsById(listId, s:boardId)
 endfunction
 
 function! s:CheckSelectedLine(char)
