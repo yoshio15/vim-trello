@@ -2,6 +2,14 @@
 " Author: ykondo
 " License: MIT
 
+
+let s:board_buf_explanation =<< trim END
+(q) close buffer
+(Enter) show Board
+
+select Board below.
+END
+
 function! g:board#OpenBoardsNewBuffer()
 
   let boards_buffer = 'BOARDS'
@@ -13,13 +21,7 @@ function! g:board#OpenBoardsNewBuffer()
   nmap <buffer> q <Plug>(close-boards)
   nmap <buffer> <CR> <Plug>(open-boards)
 
-  let explanations = [
-        \ '(q) close buffer',
-        \ '(Enter) show Board',
-        \ '',
-        \ 'select Board below.',
-        \ ]
-  call setbufline(boards_buffer, 1, explanations)
+  call setbufline(boards_buffer, 1, s:board_buf_explanation)
   call g:common#WriteDictListToBuf(g:boardDictList)
 
   call cursor(len(explanations)+2, 1)
