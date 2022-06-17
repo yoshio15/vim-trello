@@ -41,6 +41,12 @@ function! g:command#UpdateCardTitleCmd(cardId, title)
   return  g:curl#CurlPutCmd(absolute_url)
 endfunction
 
+function! g:command#MoveCardCmd(cardId, listId)
+  let path = printf("/1/cards/%s", a:cardId)
+  let absolute_url = s:BuildTrelloApiUrl(path) . '&idList=' . a:listId
+  return  g:curl#CurlPutCmd(absolute_url)
+endfunction
+
 function! g:command#UpdateCardDescCmd(cardId, desc)
   let path = printf("/1/cards/%s", a:cardId)
   let absolute_url = s:BuildTrelloApiUrl(path) . '&desc=' . a:desc
