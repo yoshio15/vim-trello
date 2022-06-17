@@ -30,7 +30,7 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
         \ '(b)ack to Lists',
         \ '(d)elete a Task',
         \ '(e)dit the title of Task',
-        \ '(m)ove to Task to other List',
+        \ '(m)ove Task to other List',
         \ '(q) close buffer',
         \ '(Enter) show detail of Task',
         \ '',
