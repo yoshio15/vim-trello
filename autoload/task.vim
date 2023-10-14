@@ -14,12 +14,14 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
   exec 'nnoremap <silent> <buffer> <Plug>(delete-card) :<C-u>call <SID>DeleteCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(edit-card) :<C-u>call <SID>EditCardTitle(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   exec 'nnoremap <silent> <buffer> <Plug>(open-cards) :<C-u>call <SID>GetSingleCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
+  exec 'nnoremap <silent> <buffer> <Plug>(move-card) :<C-u>call <SID>MoveCard(trim(getline(".")), "' . a:listId . '", "' . a:boardId . '")<CR>'
   nnoremap <silent> <buffer> <Plug>(close-cards) :<C-u>bwipeout!<CR>
   nmap <buffer> a <Plug>(add-card)
   nmap <buffer> b <Plug>(get-lists)
   nmap <buffer> d <Plug>(delete-card)
   nmap <buffer> e <Plug>(edit-card)
   nmap <buffer> q <Plug>(close-cards)
+  nmap <buffer> m <Plug>(move-card)
   nmap <buffer> <CR> <Plug>(open-cards)
 
   let list_name = g:common#GetNameByIdFromList(a:listId, g:listDictList)
@@ -28,6 +30,7 @@ function! g:task#OpenCardsNewBuffer(listId, boardId)
         \ '(b)ack to Lists',
         \ '(d)elete a Task',
         \ '(e)dit the title of Task',
+        \ '(m)ove Task to other List',
         \ '(q) close buffer',
         \ '(Enter) show detail of Task',
         \ '',
@@ -160,6 +163,31 @@ function! s:EditCardTitle(cardName, listId, boardId)
   call inputrestore()
 
   let cmd = g:command#UpdateCardTitleCmd(cardId, UrlEncode(userInput))
+
+  call system(cmd)
+  call list#GetCardsById(a:listId, a:boardId)
+
+endfunction
+
+function! s:MoveCard(cardName, listId, boardId)
+  let cardId = g:common#GetIdFromDictList(g:taskDictList, a:cardName[0])
+
+  let prompt = ''
+  for item in g:listDictList
+    if !has_key(item, "id") || !has_key(item, "name")
+      continue
+    endif
+    let prompt = prompt . printf("%d\. %s\n", item["id"], item["name"])
+  endfor
+  let prompt = prompt . 'New list id: '
+
+  call inputsave()
+  let userInput = input(prompt)
+  call inputrestore()
+
+  let newListId = g:common#GetIdFromDictList(g:listDictList, userInput)
+
+  let cmd = g:command#MoveCardCmd(cardId, newListId)
 
   call system(cmd)
   call list#GetCardsById(a:listId, a:boardId)
